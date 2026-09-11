@@ -1,0 +1,634 @@
+<title>Lepas L4 Light Signature</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800;900&family=Dancing+Script:wght@700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  /* stage — a studio is dark in every theme; these never invert */
+  --stage-0:#08120f; --stage-1:#0d1c18; --stage-2:#12262111;
+  --floor:#060d0b;
+  /* vehicle */
+  --teal:#2cc0a0; --teal-hi:#7fe6cd; --teal-mid:#189a80; --teal-dk:#0e6b59;
+  --teal-deep:#07463b;
+  --chrome:#c6d2cf; --chrome-hi:#f2f7f6; --chrome-dk:#5d6f6b;
+  --glass:#16302b; --tyre:#0b1210; --grille:#050b0a;
+  /* light sources */
+  --drl:#d6eaff; --drl-core:#ffffff; --beam:#ffefc9; --beam-core:#fffdf5;
+  --amber:#ff9e1b; --amber-core:#ffd08a;
+  --rust:#8a4028;
+  /* page chrome — these DO change with theme */
+  --page-bg:#0a1512; --page-panel:#0f201c; --page-panel-2:#132824;
+  --ink:#eef6f4; --ink-dim:#9db3ae; --ink-faint:#63807a;
+  --line:#1e3833; --line-hi:#2c4f47;
+  --accent:#2cc0a0; --accent-ink:#04201a;
+  --focus:#7fe6cd;
+  --shadow:0 24px 60px -20px rgba(0,0,0,.75);
+}
+@media (prefers-color-scheme:light){
+  :root:not([data-theme="dark"]){
+    --page-bg:#e7ecea; --page-panel:#ffffff; --page-panel-2:#f2f6f5;
+    --ink:#0b1a16; --ink-dim:#4a625c; --ink-faint:#7d938d;
+    --line:#d2dbd8; --line-hi:#bcc9c5;
+    --accent:#0e8b72; --accent-ink:#ffffff;
+    --focus:#0e8b72;
+    --shadow:0 20px 44px -22px rgba(10,40,34,.35);
+  }
+}
+:root[data-theme="light"]{
+  --page-bg:#e7ecea; --page-panel:#ffffff; --page-panel-2:#f2f6f5;
+  --ink:#0b1a16; --ink-dim:#4a625c; --ink-faint:#7d938d;
+  --line:#d2dbd8; --line-hi:#bcc9c5;
+  --accent:#0e8b72; --accent-ink:#ffffff;
+  --focus:#0e8b72;
+  --shadow:0 20px 44px -22px rgba(10,40,34,.35);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--page-bg); color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:15px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1160px; margin:0 auto; padding:34px 22px 60px;
+  display:flex; flex-direction:column; gap:26px}
+
+/* ---------- masthead ---------- */
+.masthead{display:flex; flex-wrap:wrap; align-items:flex-end;
+  justify-content:space-between; gap:18px 28px}
+.eyebrow{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:11px; letter-spacing:.19em; text-transform:uppercase;
+  color:var(--ink-faint); margin:0 0 10px}
+h1{font-family:Archivo,"Helvetica Neue",Arial,sans-serif; font-weight:900;
+  font-size:clamp(30px,5.2vw,50px); line-height:.96; letter-spacing:-.025em;
+  margin:0; text-wrap:balance; font-stretch:expanded}
+h1 em{font-style:normal; color:var(--accent)}
+.standfirst{margin:12px 0 0; max-width:56ch; color:var(--ink-dim); font-size:15px}
+.vin{font-family:"IBM Plex Mono",monospace; font-size:11px; line-height:1.7;
+  color:var(--ink-faint); text-align:right; letter-spacing:.02em;
+  font-variant-numeric:tabular-nums; white-space:nowrap}
+.vin b{color:var(--ink-dim); font-weight:500}
+
+/* ---------- stage ---------- */
+.stage{position:relative; border-radius:4px; overflow:hidden;
+  background:var(--stage-0); box-shadow:var(--shadow);
+  border:1px solid var(--line)}
+.stage svg{display:block; width:100%; height:auto}
+.stage-tag{position:absolute; left:16px; top:14px; z-index:2;
+  font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.17em;
+  text-transform:uppercase; color:#5d7d75}
+.stage-tag b{color:#8fb5ac; font-weight:500}
+.live{position:absolute; right:16px; top:12px; z-index:2; display:flex;
+  align-items:center; gap:7px; font-family:"IBM Plex Mono",monospace;
+  font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:#5d7d75}
+.live i{width:6px; height:6px; border-radius:50%; background:#4a6b64;
+  transition:background .3s, box-shadow .3s}
+[data-lamp]:not([data-lamp="off"]) ~ .live i,
+.live.on i{background:var(--teal-hi); box-shadow:0 0 8px var(--teal-hi)}
+
+/* ---------- lighting states (all driven off #rig[data-lamp]/[data-ind]) ---------- */
+#rig .drl-glow,#rig .drl-core,#rig .lamp-glow,#rig .lamp-core,
+#rig .pool,#rig .fan,#rig .wallwash,#rig .hi-core,#rig .hi-pool{
+  opacity:0; transition:opacity .34s cubic-bezier(.4,0,.2,1)}
+#rig[data-lamp="drl"] .drl-glow,#rig[data-lamp="drl"] .drl-core,
+#rig[data-lamp="low"] .drl-glow,#rig[data-lamp="low"] .drl-core,
+#rig[data-lamp="high"] .drl-glow,#rig[data-lamp="high"] .drl-core{opacity:1}
+#rig[data-lamp="drl"] .wallwash{opacity:.18}
+#rig[data-lamp="low"] .lamp-glow,#rig[data-lamp="high"] .lamp-glow{opacity:1}
+#rig[data-lamp="low"] .lamp-core,#rig[data-lamp="high"] .lamp-core{opacity:1}
+#rig[data-lamp="low"] .pool{opacity:.62}
+#rig[data-lamp="low"] .fan{opacity:.24}
+#rig[data-lamp="low"] .wallwash{opacity:.42}
+#rig[data-lamp="high"] .pool{opacity:.9}
+#rig[data-lamp="high"] .fan{opacity:.44}
+#rig[data-lamp="high"] .hi-core{opacity:1}
+#rig[data-lamp="high"] .hi-pool{opacity:.75}
+#rig[data-lamp="high"] .wallwash{opacity:.72}
+/* body picks up its own light */
+#rig .bodylight{opacity:0; transition:opacity .34s ease}
+#rig[data-lamp="low"] .bodylight{opacity:.4}
+#rig[data-lamp="high"] .bodylight{opacity:.66}
+
+.drl-glow{filter:drop-shadow(0 0 3px var(--drl)) drop-shadow(0 0 14px rgba(214,234,255,.85))
+  drop-shadow(0 0 34px rgba(160,205,255,.5))}
+.lamp-glow{filter:drop-shadow(0 0 5px var(--beam)) drop-shadow(0 0 20px rgba(255,239,201,.8))
+  drop-shadow(0 0 52px rgba(255,225,150,.45))}
+.hi-core{filter:drop-shadow(0 0 8px var(--beam-core)) drop-shadow(0 0 30px rgba(255,247,220,.9))}
+
+/* indicators — sequential sweep, outboard to inboard */
+.ind{opacity:0}
+.ind-seg{opacity:0; filter:drop-shadow(0 0 4px var(--amber)) drop-shadow(0 0 14px rgba(255,158,27,.7))}
+#rig[data-ind="left"] .ind-l,#rig[data-ind="right"] .ind-r,
+#rig[data-ind="hazard"] .ind{opacity:1}
+#rig[data-ind="left"] .ind-l .ind-seg,
+#rig[data-ind="right"] .ind-r .ind-seg,
+#rig[data-ind="hazard"] .ind .ind-seg{animation:sweep 1.15s linear infinite}
+.ind-seg:nth-child(1){animation-delay:0s}
+.ind-seg:nth-child(2){animation-delay:.075s}
+.ind-seg:nth-child(3){animation-delay:.15s}
+.ind-seg:nth-child(4){animation-delay:.225s}
+.ind-seg:nth-child(5){animation-delay:.3s}
+@keyframes sweep{
+  0%,4%{opacity:0} 10%,58%{opacity:1} 72%,100%{opacity:0}
+}
+
+/* ---------- console ---------- */
+.console{display:grid; gap:18px;
+  grid-template-columns:minmax(0,1.55fr) minmax(0,1fr)}
+@media (max-width:860px){.console{grid-template-columns:1fr}}
+.panel{background:var(--page-panel); border:1px solid var(--line);
+  border-radius:3px; padding:18px 18px 20px}
+.panel h2{font-family:"IBM Plex Mono",monospace; font-size:10px;
+  letter-spacing:.19em; text-transform:uppercase; color:var(--ink-faint);
+  margin:0 0 14px; font-weight:500}
+.ctl-group + .ctl-group{margin-top:18px; padding-top:18px;
+  border-top:1px solid var(--line)}
+.ctl-lab{font-family:"IBM Plex Mono",monospace; font-size:10px;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--ink-faint);
+  margin:0 0 9px}
+.row{display:flex; flex-wrap:wrap; gap:7px}
+button{font:inherit; cursor:pointer; color:var(--ink);
+  background:var(--page-panel-2); border:1px solid var(--line);
+  border-radius:2px; padding:9px 14px; font-size:13px; font-weight:500;
+  letter-spacing:.01em; transition:background .16s, border-color .16s,
+  color .16s, transform .08s}
+button:hover{border-color:var(--line-hi); background:var(--page-panel)}
+button:active{transform:translateY(1px)}
+button:focus-visible{outline:2px solid var(--focus); outline-offset:2px}
+button[aria-pressed="true"]{background:var(--accent); border-color:var(--accent);
+  color:var(--accent-ink)}
+button.ghost[aria-pressed="true"]{background:var(--amber);
+  border-color:var(--amber); color:#2a1500}
+.seq{width:100%; justify-content:center; padding:11px 14px;
+  font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.15em;
+  text-transform:uppercase}
+
+/* ---------- readout ---------- */
+.readout dl{margin:0; display:grid; grid-template-columns:1fr auto;
+  gap:0; font-variant-numeric:tabular-nums}
+.readout dt,.readout dd{margin:0; padding:9px 0; border-bottom:1px solid var(--line);
+  font-size:13px}
+.readout dt{color:var(--ink-dim)}
+.readout dd{font-family:"IBM Plex Mono",monospace; font-size:12.5px;
+  text-align:right; color:var(--ink)}
+.readout dl>:nth-last-child(-n+2){border-bottom:0}
+.state{display:flex; align-items:baseline; gap:10px; margin:0 0 16px;
+  padding-bottom:14px; border-bottom:1px solid var(--line)}
+.state strong{font-family:Archivo,sans-serif; font-weight:800; font-size:22px;
+  letter-spacing:-.01em; line-height:1.1}
+.state span{font-family:"IBM Plex Mono",monospace; font-size:10px;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--ink-faint)}
+.swatch{width:10px; height:10px; border-radius:50%; flex:0 0 auto;
+  align-self:center; background:var(--ink-faint); transition:background .3s,box-shadow .3s}
+
+.note{font-size:12.5px; color:var(--ink-faint); margin:0; max-width:74ch}
+.note b{color:var(--ink-dim); font-weight:500}
+footer{border-top:1px solid var(--line); padding-top:16px;
+  display:flex; flex-wrap:wrap; gap:12px 26px; justify-content:space-between;
+  align-items:baseline}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important; animation-iteration-count:1 !important;
+    transition-duration:.001ms !important}
+  #rig[data-ind] .ind-seg{opacity:1}
+}
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div>
+      <p class="eyebrow">Lighting Study · Front Elevation</p>
+      <h1>Lepas L4<br><em>Light Signature</em></h1>
+      <p class="standfirst">The L4 splits its face in two: a slim daytime blade riding the shoulder
+        line, and a separate low-mounted projector cluster outboard of the studded grille. Switch
+        between them below.</p>
+    </div>
+    <p class="vin">
+      <b>PROGRAMME</b> &nbsp;L4 / ZA-SPEC<br>
+      <b>VIEW</b> &nbsp;FRONT ELEVATION 1:12<br>
+      <b>FINISH</b> &nbsp;AURORA TEAL MET.<br>
+      <b>LAMP TYPE</b> &nbsp;FULL LED, 3-CHAMBER
+    </p>
+  </header>
+
+  <div class="stage">
+    <p class="stage-tag"><b>RIG 04</b> &nbsp;· &nbsp;PHOTOMETRIC BAY</p>
+    <svg id="rig" viewBox="0 0 1200 660" role="img" data-lamp="low" data-ind="none"
+         aria-label="Front elevation of the Lepas L4 with its exterior lighting illuminated">
+      <defs>
+        <linearGradient id="bodyG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#38d4b1"/>
+          <stop offset=".38" stop-color="#2cc0a0"/>
+          <stop offset=".74" stop-color="#14876f"/>
+          <stop offset="1" stop-color="#0a5647"/>
+        </linearGradient>
+        <linearGradient id="hoodG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#5ae0c0"/>
+          <stop offset=".55" stop-color="#2bbb9c"/>
+          <stop offset="1" stop-color="#127a65"/>
+        </linearGradient>
+        <linearGradient id="bumperG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#199a7f"/>
+          <stop offset=".6" stop-color="#0d6a58"/>
+          <stop offset="1" stop-color="#073e34"/>
+        </linearGradient>
+        <linearGradient id="chromeG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#f2f7f6"/><stop offset=".3" stop-color="#aebbb8"/>
+          <stop offset=".55" stop-color="#e8f0ee"/><stop offset="1" stop-color="#5d6f6b"/>
+        </linearGradient>
+        <linearGradient id="glassG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#2d5a52"/><stop offset=".5" stop-color="#16302b"/>
+          <stop offset="1" stop-color="#0d211d"/>
+        </linearGradient>
+        <linearGradient id="roofG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#e8efed"/><stop offset="1" stop-color="#9fb0ac"/>
+        </linearGradient>
+        <radialGradient id="poolG" cx=".5" cy=".5" r=".5">
+          <stop offset="0" stop-color="#fff6dd" stop-opacity=".95"/>
+          <stop offset=".45" stop-color="#ffe9b8" stop-opacity=".42"/>
+          <stop offset="1" stop-color="#ffe0a0" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="glareG" cx=".5" cy=".5" r=".5">
+          <stop offset="0" stop-color="#fffdf5" stop-opacity=".62"/>
+          <stop offset=".38" stop-color="#ffefc9" stop-opacity=".26"/>
+          <stop offset="1" stop-color="#ffefc9" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="wallG" cx=".5" cy=".72" r=".62">
+          <stop offset="0" stop-color="#ffe9bd" stop-opacity=".6"/>
+          <stop offset="1" stop-color="#ffd98f" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="fanG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#fff2d2" stop-opacity=".55"/>
+          <stop offset="1" stop-color="#ffe6ae" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="floorG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#0e1f1b"/><stop offset="1" stop-color="#060d0b"/>
+        </linearGradient>
+        <clipPath id="grilleClip">
+          <path d="M424 246 H776 Q826 246 834 300 L841 352 Q845 420 788 430 H412
+                   Q355 420 359 352 L366 300 Q374 246 424 246 Z"/>
+        </clipPath>
+        <filter id="soft" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="18"/>
+        </filter>
+        <filter id="softer" x="-70%" y="-70%" width="240%" height="240%">
+          <feGaussianBlur stdDeviation="34"/>
+        </filter>
+      </defs>
+
+      <!-- backdrop: brick + louvred screen, from the reference setting -->
+      <rect x="0" y="0" width="1200" height="600" fill="#0b1714"/>
+      <g opacity=".5">
+        <rect x="0" y="0" width="1200" height="600" fill="#0d1a17"/>
+        <g fill="#141f1c">
+          <rect x="0" y="40" width="1200" height="2"/><rect x="0" y="122" width="1200" height="2"/>
+          <rect x="0" y="204" width="1200" height="2"/><rect x="0" y="286" width="1200" height="2"/>
+          <rect x="0" y="368" width="1200" height="2"/><rect x="0" y="450" width="1200" height="2"/>
+        </g>
+        <rect x="52" y="30" width="250" height="330" fill="#2a1410"/>
+        <g fill="#6d3222">
+          <rect x="62" y="40" width="9" height="310"/><rect x="86" y="40" width="9" height="310"/>
+          <rect x="110" y="40" width="9" height="310"/><rect x="134" y="40" width="9" height="310"/>
+          <rect x="158" y="40" width="9" height="310"/><rect x="182" y="40" width="9" height="310"/>
+          <rect x="206" y="40" width="9" height="310"/><rect x="230" y="40" width="9" height="310"/>
+          <rect x="254" y="40" width="9" height="310"/><rect x="278" y="40" width="9" height="310"/>
+        </g>
+      </g>
+      <!-- light thrown back onto the wall -->
+      <ellipse class="wallwash" cx="600" cy="330" rx="620" ry="290" fill="url(#wallG)"/>
+
+      <!-- floor -->
+      <rect x="0" y="560" width="1200" height="100" fill="url(#floorG)"/>
+      <ellipse cx="600" cy="586" rx="430" ry="26" fill="#030807" opacity=".85"/>
+
+      <!-- beam pools on the floor (behind the car) -->
+      <g filter="url(#soft)">
+        <ellipse class="pool" cx="286" cy="596" rx="215" ry="46" fill="url(#poolG)"/>
+        <ellipse class="pool" cx="914" cy="596" rx="215" ry="46" fill="url(#poolG)"/>
+        <ellipse class="hi-pool" cx="600" cy="606" rx="440" ry="40" fill="url(#poolG)"/>
+      </g>
+
+      <!-- ============ VEHICLE ============ -->
+      <!-- roof + greenhouse -->
+      <path d="M452 74 Q600 62 748 74 L764 92 Q600 80 436 92 Z" fill="url(#roofG)"/>
+      <path d="M436 92 Q600 80 764 92 L830 190 Q600 172 370 190 Z" fill="url(#glassG)"/>
+      <path d="M470 104 Q600 94 660 100 L636 168 Q520 166 412 180 Z" fill="#3c6f65" opacity=".28"/>
+      <!-- mirrors -->
+      <path d="M352 176 q-46 4 -58 22 q-4 14 16 18 l48 -8 Z" fill="#0f7a64"/>
+      <path d="M848 176 q46 4 58 22 q4 14 -16 18 l-48 -8 Z" fill="#0f7a64"/>
+
+      <!-- main body -->
+      <path d="M370 190 Q600 172 830 190 L878 214 Q930 236 952 292 L972 400
+               Q984 470 978 520 L968 560 H232 L222 520 Q216 470 228 400 L248 292
+               Q270 236 322 214 Z" fill="url(#bodyG)"/>
+      <!-- hood -->
+      <path d="M382 196 Q600 180 818 196 L862 226 Q900 250 912 296 L604 306
+               L288 296 Q300 250 338 226 Z" fill="url(#hoodG)"/>
+      <path d="M470 214 Q600 202 730 214 L724 244 Q600 234 476 244 Z"
+            fill="#7fe6cd" opacity=".22"/>
+      <!-- fender crease highlight -->
+      <path d="M252 300 Q238 400 244 500" stroke="#7fe6cd" stroke-width="3"
+            fill="none" opacity=".26"/>
+      <path d="M948 300 Q962 400 956 500" stroke="#7fe6cd" stroke-width="3"
+            fill="none" opacity=".26"/>
+      <!-- light spilling back onto the bodywork when lamps are lit -->
+      <g class="bodylight">
+        <ellipse cx="286" cy="300" rx="120" ry="58" fill="#ffe9bd" opacity=".5" filter="url(#soft)"/>
+        <ellipse cx="914" cy="300" rx="120" ry="58" fill="#ffe9bd" opacity=".5" filter="url(#soft)"/>
+      </g>
+
+      <!-- ---------- GRILLE ---------- -->
+      <path d="M424 246 H776 Q826 246 834 300 L841 352 Q845 420 788 430 H412
+               Q355 420 359 352 L366 300 Q374 246 424 246 Z"
+            fill="url(#chromeG)"/>
+      <path d="M430 254 H770 Q818 254 826 302 L832 352 Q836 422 784 422 H416
+               Q364 422 368 352 L374 302 Q382 254 430 254 Z"
+            fill="var(--grille)"/>
+      <g clip-path="url(#grilleClip)"><g id="studs"></g></g>
+      <text x="600" y="352" text-anchor="middle" font-family="'Dancing Script',cursive"
+            font-size="46" font-weight="700" fill="url(#chromeG)">Lepas</text>
+
+      <!-- ---------- UPPER DRL BLADES ---------- -->
+      <!-- left -->
+      <g>
+        <path d="M244 214 C300 208 360 218 418 240 L414 262 C358 242 300 232 244 236 Z"
+              fill="#0a1512"/>
+        <path class="drl-glow" d="M252 222 C304 217 358 226 410 246 L408 254
+              C356 236 304 228 252 232 Z" fill="var(--drl)"/>
+        <path class="drl-core" d="M254 225 C305 220 357 229 407 248 L406 251
+              C356 233 305 226 254 230 Z" fill="var(--drl-core)"/>
+        <g class="ind ind-l">
+          <rect class="ind-seg" x="250" y="222" width="30" height="11" rx="5" fill="var(--amber)" transform="rotate(-2 265 227)"/>
+          <rect class="ind-seg" x="284" y="223" width="30" height="11" rx="5" fill="var(--amber)" transform="rotate(1 299 228)"/>
+          <rect class="ind-seg" x="318" y="227" width="30" height="11" rx="5" fill="var(--amber)" transform="rotate(6 333 232)"/>
+          <rect class="ind-seg" x="350" y="234" width="30" height="12" rx="5" fill="var(--amber)" transform="rotate(11 365 240)"/>
+          <rect class="ind-seg" x="380" y="243" width="28" height="12" rx="5" fill="var(--amber)" transform="rotate(16 394 249)"/>
+        </g>
+      </g>
+      <!-- right (mirrored) -->
+      <g transform="translate(1200 0) scale(-1 1)">
+        <path d="M244 214 C300 208 360 218 418 240 L414 262 C358 242 300 232 244 236 Z"
+              fill="#0a1512"/>
+        <path class="drl-glow" d="M252 222 C304 217 358 226 410 246 L408 254
+              C356 236 304 228 252 232 Z" fill="var(--drl)"/>
+        <path class="drl-core" d="M254 225 C305 220 357 229 407 248 L406 251
+              C356 233 305 226 254 230 Z" fill="var(--drl-core)"/>
+        <g class="ind ind-r">
+          <rect class="ind-seg" x="250" y="222" width="30" height="11" rx="5" fill="var(--amber)" transform="rotate(-2 265 227)"/>
+          <rect class="ind-seg" x="284" y="223" width="30" height="11" rx="5" fill="var(--amber)" transform="rotate(1 299 228)"/>
+          <rect class="ind-seg" x="318" y="227" width="30" height="11" rx="5" fill="var(--amber)" transform="rotate(6 333 232)"/>
+          <rect class="ind-seg" x="350" y="234" width="30" height="12" rx="5" fill="var(--amber)" transform="rotate(11 365 240)"/>
+          <rect class="ind-seg" x="380" y="243" width="28" height="12" rx="5" fill="var(--amber)" transform="rotate(16 394 249)"/>
+        </g>
+      </g>
+
+      <!-- ---------- LOWER PROJECTOR CLUSTERS ---------- -->
+      <g id="podL">
+        <path d="M236 286 Q300 278 352 296 L356 356 Q302 342 240 348 Z" fill="#05100d"/>
+        <path d="M244 294 Q300 287 346 303 L349 348 Q302 336 248 341 Z" fill="#0b1a17"/>
+        <ellipse cx="278" cy="316" rx="24" ry="17" fill="#132723"/>
+        <ellipse cx="326" cy="322" rx="19" ry="14" fill="#132723"/>
+        <ellipse class="lamp-glow" cx="278" cy="316" rx="20" ry="14" fill="var(--beam)"/>
+        <ellipse class="lamp-core" cx="278" cy="316" rx="10" ry="7" fill="var(--beam-core)"/>
+        <ellipse class="hi-core" cx="326" cy="322" rx="15" ry="11" fill="var(--beam-core)"/>
+      </g>
+      <g id="podR" transform="translate(1200 0) scale(-1 1)">
+        <path d="M236 286 Q300 278 352 296 L356 356 Q302 342 240 348 Z" fill="#05100d"/>
+        <path d="M244 294 Q300 287 346 303 L349 348 Q302 336 248 341 Z" fill="#0b1a17"/>
+        <ellipse cx="278" cy="316" rx="24" ry="17" fill="#132723"/>
+        <ellipse cx="326" cy="322" rx="19" ry="14" fill="#132723"/>
+        <ellipse class="lamp-glow" cx="278" cy="316" rx="20" ry="14" fill="var(--beam)"/>
+        <ellipse class="lamp-core" cx="278" cy="316" rx="10" ry="7" fill="var(--beam-core)"/>
+        <ellipse class="hi-core" cx="326" cy="322" rx="15" ry="11" fill="var(--beam-core)"/>
+      </g>
+
+      <!-- volumetric spill from each cluster -->
+      <g filter="url(#softer)">
+        <path class="fan" d="M258 320 L120 600 L470 600 L302 320 Z" fill="url(#fanG)"/>
+        <path class="fan" d="M942 320 L1080 600 L730 600 L898 320 Z" fill="url(#fanG)"/>
+      </g>
+      <!-- glare bloom over everything -->
+      <g>
+        <ellipse class="lamp-glow" cx="278" cy="316" rx="118" ry="86" fill="url(#glareG)"/>
+        <ellipse class="lamp-glow" cx="922" cy="316" rx="118" ry="86" fill="url(#glareG)"/>
+        <ellipse class="hi-core" cx="326" cy="322" rx="96" ry="70" fill="url(#glareG)"/>
+        <ellipse class="hi-core" cx="874" cy="322" rx="96" ry="70" fill="url(#glareG)"/>
+      </g>
+
+      <!-- ---------- BUMPER, PLATE, INTAKE ---------- -->
+      <path d="M232 432 Q600 414 968 432 L978 520 Q984 556 968 560 H232
+               Q216 556 222 520 Z" fill="url(#bumperG)"/>
+      <!-- plate -->
+      <rect x="468" y="440" width="264" height="62" rx="6" fill="#080f0d"/>
+      <rect x="472" y="444" width="256" height="54" rx="4" fill="#0d1714"
+            stroke="#33463f" stroke-width="1"/>
+      <text x="600" y="483" text-anchor="middle" font-family="'Dancing Script',cursive"
+            font-size="34" font-weight="700" fill="#eaf3f0">Lepas L4</text>
+      <!-- lower intake -->
+      <path d="M300 512 H900 Q912 512 910 526 L904 548 Q902 556 890 556 H310
+               Q298 556 296 548 L290 526 Q288 512 300 512 Z" fill="#050c0a"/>
+      <g id="mesh" opacity=".85"></g>
+      <!-- corner vents -->
+      <path d="M234 470 L292 466 L288 508 L238 510 Z" fill="#050c0a"/>
+      <path d="M966 470 L908 466 L912 508 L962 510 Z" fill="#050c0a"/>
+      <!-- splitter -->
+      <path d="M244 556 H956 L948 574 H252 Z" fill="#0a1210"/>
+    </svg>
+    <p class="live"><i></i>Photometry live</p>
+  </div>
+
+  <div class="console">
+    <section class="panel">
+      <h2>Exterior lighting control</h2>
+
+      <div class="ctl-group">
+        <p class="ctl-lab">Lamp mode</p>
+        <div class="row" id="lampRow" role="group" aria-label="Lamp mode">
+          <button data-lamp-btn="off"  aria-pressed="false">All off</button>
+          <button data-lamp-btn="drl"  aria-pressed="false">Daytime running</button>
+          <button data-lamp-btn="low"  aria-pressed="true">Low beam</button>
+          <button data-lamp-btn="high" aria-pressed="false">High beam</button>
+        </div>
+      </div>
+
+      <div class="ctl-group">
+        <p class="ctl-lab">Direction indicators — sequential</p>
+        <div class="row" id="indRow" role="group" aria-label="Direction indicators">
+          <button class="ghost" data-ind-btn="left"   aria-pressed="false">Left</button>
+          <button class="ghost" data-ind-btn="right"  aria-pressed="false">Right</button>
+          <button class="ghost" data-ind-btn="hazard" aria-pressed="false">Hazards</button>
+          <button class="ghost" data-ind-btn="none"   aria-pressed="true">Cancel</button>
+        </div>
+      </div>
+
+      <div class="ctl-group">
+        <p class="ctl-lab">Sequences</p>
+        <div class="row">
+          <button class="seq" id="welcomeBtn">▶ Run welcome sequence</button>
+        </div>
+        <div class="row" style="margin-top:7px">
+          <button id="autoBtn" aria-pressed="true" style="width:100%;justify-content:center">
+            Auto cycle — on</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel readout">
+      <h2>Lamp telemetry</h2>
+      <p class="state"><span class="swatch" id="sw"></span>
+        <strong id="stateName">Low beam</strong>
+        <span id="stateCode">MODE 02</span></p>
+      <dl>
+        <dt>Luminous flux</dt><dd><span id="mLum">2 400</span> lm</dd>
+        <dt>Colour temperature</dt><dd><span id="mK">4 300</span> K</dd>
+        <dt>System draw</dt><dd><span id="mW">42</span> W</dd>
+        <dt>Beam range</dt><dd><span id="mRange">65</span> m</dd>
+        <dt>Chambers lit</dt><dd><span id="mCh">4 of 6</span></dd>
+      </dl>
+      <p class="note" style="margin-top:14px" id="modeNote">
+        Projector cluster only. The daytime blade drops to 30% intensity and takes over
+        position-lamp duty.</p>
+    </section>
+  </div>
+
+  <footer>
+    <p class="note"><b>Drawing note.</b> Front elevation, redrawn from the Aurora Teal press
+      car. The grille carries 214 chrome studs on twelve radial rings — swept toward the badge
+      so the pattern reads as motion when the car is lit from below.</p>
+    <p class="note" style="text-align:right"><b>Lepas L4</b> · 1.5T DCT</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var rig = document.getElementById('rig');
+
+  /* ---- generate the studded grille pattern (12 radial rings) ---- */
+  var studs = document.getElementById('studs');
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  var cx = 600, cy = 338, parts = [], count = 0;
+  for (var ring = 0; ring < 12; ring++){
+    var t   = ring / 11;
+    var rx  = 46 + t * 236;
+    var ry  = 30 + t * 118;
+    var n   = 10 + ring * 3;
+    var sw  = 4.2 + t * 4.6;
+    var sh  = 3.0 + t * 2.2;
+    var op  = (0.95 - t * 0.28).toFixed(2);
+    for (var i = 0; i < n; i++){
+      var a  = (i / n) * Math.PI * 2 + (ring % 2 ? Math.PI / n : 0);
+      var x  = cx + Math.cos(a) * rx;
+      var y  = cy + Math.sin(a) * ry;
+      var deg = Math.atan2(Math.sin(a) * ry, Math.cos(a) * rx) * 180 / Math.PI;
+      parts.push('<ellipse cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) +
+        '" rx="' + sw.toFixed(1) + '" ry="' + sh.toFixed(1) +
+        '" transform="rotate(' + deg.toFixed(1) + ' ' + x.toFixed(1) + ' ' + y.toFixed(1) +
+        ')" fill="url(#chromeG)" opacity="' + op + '"/>');
+      count++;
+    }
+  }
+  studs.innerHTML = parts.join('');
+
+  /* ---- lower intake mesh ---- */
+  var mesh = document.getElementById('mesh'), m = [];
+  for (var mx = 302; mx < 900; mx += 13){
+    m.push('<rect x="' + mx + '" y="518" width="7" height="32" rx="2" fill="#16241f"/>');
+  }
+  mesh.innerHTML = m.join('');
+
+  /* ---- lamp modes ---- */
+  var MODES = {
+    off:  {name:'All off',        code:'MODE 00', lum:'0',     k:'—',     w:'0',
+           range:'0',  ch:'0 of 6', sw:'var(--ink-faint)',
+           note:'Every chamber dark. Only the chrome studs and the plate catch ambient bay light.'},
+    drl:  {name:'Daytime running',code:'MODE 01', lum:'620',   k:'5 700', w:'14',
+           range:'—',  ch:'2 of 6', sw:'var(--drl)',
+           note:'The upper blade at full intensity. Legally a position lamp — visible by day, no usable road throw.'},
+    low:  {name:'Low beam',       code:'MODE 02', lum:'2 400', k:'4 300', w:'42',
+           range:'65', ch:'4 of 6', sw:'var(--beam)',
+           note:'Projector cluster only. The daytime blade drops to 30% intensity and takes over position-lamp duty.'},
+    high: {name:'High beam',      code:'MODE 03', lum:'4 950', k:'5 000', w:'78',
+           range:'190',ch:'6 of 6', sw:'var(--beam-core)',
+           note:'Both projectors plus the outboard reflector. Cut-off lifts and the hot spot moves to the horizon.'}
+  };
+  var el = {
+    name:document.getElementById('stateName'), code:document.getElementById('stateCode'),
+    lum:document.getElementById('mLum'), k:document.getElementById('mK'),
+    w:document.getElementById('mW'), range:document.getElementById('mRange'),
+    ch:document.getElementById('mCh'), note:document.getElementById('modeNote'),
+    sw:document.getElementById('sw'), live:document.querySelector('.live')
+  };
+
+  function setLamp(mode){
+    rig.setAttribute('data-lamp', mode);
+    var d = MODES[mode];
+    el.name.textContent = d.name;  el.code.textContent = d.code;
+    el.lum.textContent  = d.lum;   el.k.textContent    = d.k;
+    el.w.textContent    = d.w;     el.range.textContent= d.range;
+    el.ch.textContent   = d.ch;    el.note.textContent = d.note;
+    el.sw.style.background = d.sw;
+    el.sw.style.boxShadow  = mode === 'off' ? 'none' : '0 0 10px ' + d.sw;
+    el.live.classList.toggle('on', mode !== 'off');
+    document.querySelectorAll('[data-lamp-btn]').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.dataset.lampBtn === mode));
+    });
+  }
+  function setInd(mode){
+    rig.setAttribute('data-ind', mode);
+    document.querySelectorAll('[data-ind-btn]').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.dataset.indBtn === mode));
+    });
+  }
+
+  document.querySelectorAll('[data-lamp-btn]').forEach(function(b){
+    b.addEventListener('click', function(){ stopAuto(); setLamp(b.dataset.lampBtn); });
+  });
+  document.querySelectorAll('[data-ind-btn]').forEach(function(b){
+    b.addEventListener('click', function(){ setInd(b.dataset.indBtn); });
+  });
+
+  /* ---- auto cycle: the lights switching on and off ---- */
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var order = ['low','high','drl','off'], idx = 0, timer = null;
+  var autoBtn = document.getElementById('autoBtn');
+
+  function tick(){ idx = (idx + 1) % order.length; setLamp(order[idx]); }
+  function startAuto(){
+    if (reduce || timer) return;
+    timer = setInterval(tick, 2600);
+    autoBtn.setAttribute('aria-pressed','true');
+    autoBtn.textContent = 'Auto cycle — on';
+  }
+  function stopAuto(){
+    if (timer){ clearInterval(timer); timer = null; }
+    autoBtn.setAttribute('aria-pressed','false');
+    autoBtn.textContent = 'Auto cycle — off';
+  }
+  autoBtn.addEventListener('click', function(){ timer ? stopAuto() : startAuto(); });
+
+  /* ---- welcome sequence: the choreography a car runs when you unlock it ---- */
+  var seqTimers = [];
+  document.getElementById('welcomeBtn').addEventListener('click', function(){
+    stopAuto();
+    seqTimers.forEach(clearTimeout); seqTimers = [];
+    var steps = [
+      [0,    function(){ setLamp('off');  setInd('none'); }],
+      [260,  function(){ setInd('hazard'); }],
+      [1180, function(){ setInd('none');  setLamp('drl'); }],
+      [1900, function(){ setLamp('low'); }],
+      [2700, function(){ setLamp('high'); }],
+      [3500, function(){ setLamp('low'); }]
+    ];
+    steps.forEach(function(s){ seqTimers.push(setTimeout(s[1], reduce ? 0 : s[0])); });
+  });
+
+  /* ---- open lit, then start cycling ---- */
+  setLamp('low');
+  setInd('none');
+  if (!reduce) setTimeout(startAuto, 1600); else stopAuto();
+
+  document.querySelector('footer .note b').nextSibling.textContent =
+    ' Front elevation, redrawn from the Aurora Teal press car. The grille carries ' +
+    count + ' chrome studs on twelve radial rings — swept toward the badge so the ' +
+    'pattern reads as motion when the car is lit from below.';
+})();
+</script>

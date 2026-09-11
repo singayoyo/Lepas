@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lepas</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --ink:#171b22;
+  --bar:#fff;
+  --rule:#eef0f2;
+  --header-h:129px;
+  --lepas-mist:#f4f2ee;
+  --lepas-cloud:#dbe0e6;
+  --lepas-warm-cloud:#dbd5ce;
+  --lepas-silver:#c3c7c8;
+  --lepas-charcoal:#2b3846;
+  --lepas-slate:#485a58;
+  --lepas-teal:#306078;
+  --lepas-deep-teal:#183840;
+  --lepas-green:#50a870;
+  --lepas-gold:#a0913d;
+  --lepas-bronze:#705828;
+  --lepas-headlamp:#d2ecff;
+  --good:#0b8f48;
+  --warn:#b98112;
+  --crit:#b83b30;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#fff;color:var(--ink)}
+body{
+  font-family:Arial,"Helvetica Neue",Helvetica,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:geometricPrecision;
+}
+.site{
+  min-height:100vh;
+  background:#fff;
+}
+.topbar{
+  height:var(--header-h);
+  position:relative;
+  display:flex;
+  align-items:center;
+  padding:0 94px 0 105px;
+  background:var(--bar);
+  border-bottom:1px solid var(--rule);
+}
+.brand{
+  display:block;
+  width:260px;
+  height:52px;
+  background:url("assets/lepas-logo.png") left center / contain no-repeat;
+  text-indent:-9999px;
+  overflow:hidden;
+}
+.nav,
+.utility{
+  display:flex;
+  align-items:center;
+}
+.nav{
+  position:absolute;
+  left:50%;
+  top:0;
+  height:var(--header-h);
+  transform:translateX(-50%);
+  justify-content:center;
+  gap:72px;
+}
+.utility{
+  position:absolute;
+  right:107px;
+  top:0;
+  height:var(--header-h);
+  justify-content:flex-start;
+  gap:87px;
+}
+.nav a,
+.utility a{
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  color:var(--ink);
+  text-decoration:none;
+  font-size:23px;
+  line-height:1;
+  font-weight:500;
+  letter-spacing:-.02em;
+  white-space:nowrap;
+}
+.chev{
+  width:12px;
+  height:12px;
+  border-right:2px solid currentColor;
+  border-bottom:2px solid currentColor;
+  transform:rotate(45deg) translateY(-3px);
+}
+.external{
+  position:relative;
+  width:18px;
+  height:18px;
+  margin-left:1px;
+  border:2px solid currentColor;
+  border-left:0;
+  border-bottom:0;
+}
+.external:before{
+  content:"";
+  position:absolute;
+  right:-2px;
+  top:-2px;
+  width:8px;
+  height:8px;
+  border-top:2px solid currentColor;
+  border-right:2px solid currentColor;
+}
+.external:after{
+  content:"";
+  position:absolute;
+  right:-2px;
+  top:-2px;
+  width:17px;
+  height:2px;
+  background:currentColor;
+  transform:rotate(-45deg);
+  transform-origin:right center;
+}
+.hero{
+  position:relative;
+  overflow:hidden;
+  width:100%;
+  height:745px;
+  background:url("assets/lepas-hero-panorama.png") center top / cover no-repeat;
+}
+.light-canvas{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  mix-blend-mode:screen;
+}
+.lower-white{
+  height:124px;
+  background:#fff;
+}
+.report{
+  background:var(--lepas-mist);
+  color:var(--ink);
+  font-family:"Source Sans 3",Arial,"Helvetica Neue",Helvetica,sans-serif;
+  border-top:1px solid rgba(23,27,34,.08);
+}
+.report-shell{
+  max-width:1480px;
+  margin:0 auto;
+  padding:clamp(28px,4vw,58px) clamp(18px,4vw,64px) 72px;
+}
+.report-kicker{
+  margin:0 0 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-family:Montserrat,Arial,sans-serif;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--lepas-slate);
+}
+.report-kicker:before{
+  content:"";
+  width:34px;
+  height:2px;
+  background:var(--lepas-gold);
+}
+.report-hero{
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr);
+  gap:clamp(26px,4vw,64px);
+  align-items:end;
+  border-bottom:1px solid rgba(23,27,34,.12);
+  padding-bottom:26px;
+}
+.report-title{
+  margin:0;
+  font-family:Montserrat,Arial,sans-serif;
+  font-size:clamp(38px,7.4vw,106px);
+  line-height:.86;
+  letter-spacing:-.055em;
+}
+.report-title span{
+  display:block;
+  max-width:18ch;
+  margin-top:.28em;
+  font-size:clamp(18px,2.3vw,30px);
+  line-height:1.08;
+  letter-spacing:-.025em;
+  color:var(--lepas-slate);
+}
+.report-verdict{
+  margin:18px 0 0;
+  max-width:70ch;
+  color:var(--lepas-charcoal);
+  font-size:clamp(15px,1.2vw,17px);
+  line-height:1.55;
+}
+.scope-card{
+  padding-left:0;
+}
+.scope-card h2{
+  margin:0 0 8px;
+  font-family:Montserrat,Arial,sans-serif;
+  font-size:18px;
+}
+.scope-card p{
+  margin:0;
+  color:var(--lepas-slate);
+  line-height:1.5;
+}
+.scope-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:18px;
+}
+.scope-btn{
+  appearance:none;
+  border:1px solid rgba(23,27,34,.16);
+  background:#fff;
+  color:var(--ink);
+  font:600 12px/1 "Source Sans 3",Arial,sans-serif;
+  padding:9px 12px;
+  border-radius:2px;
+  cursor:pointer;
+}
+.scope-btn[aria-pressed="true"]{
+  background:var(--ink);
+  color:#fff;
+  border-color:var(--ink);
+}
+.metric-grid{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  border-bottom:1px solid rgba(23,27,34,.12);
+}
+.metric{
+  padding:20px 20px 18px;
+  border-left:1px solid rgba(23,27,34,.1);
+  min-width:0;
+}
+.metric:first-child{border-left:0;padding-left:0}
+.metric .label{
+  display:block;
+  font-family:Montserrat,Arial,sans-serif;
+  font-size:10.5px;
+  font-weight:700;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:var(--lepas-slate);
+}
+.metric .value{
+  display:block;
+  margin-top:5px;
+  font-family:Montserrat,Arial,sans-serif;
+  font-size:clamp(22px,2.4vw,34px);
+  font-weight:700;
+  letter-spacing:-.035em;
+}
+.metric .note{
+  display:block;
+  margin-top:5px;
+  color:var(--lepas-slate);
+  font-size:12px;
+}
+.viz-grid{
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:clamp(22px,2.6vw,36px) clamp(22px,3vw,44px);
+  padding-top:34px;
+}
+.panel{
+  grid-column:span 6;
+  min-width:0;
+}
+.panel.wide{grid-column:span 8}
+.panel.side{grid-column:span 4}
+.panel.full{grid-column:1/-1}
+.panel header{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:16px;
+  padding-bottom:9px;
+  border-bottom:1px solid rgba(23,27,34,.12);
+}
+.panel h3{
+  margin:0;
+  font-family:Montserrat,Arial,sans-serif;
+  font-size:15px;
+  line-height:1.2;
+}
+.hint{
+  margin:10px 0 14px;
+  max-width:66ch;
+  color:var(--lepas-slate);
+  font-size:13px;
+  line-height:1.45;
+}
+.chart{
+  display:block;
+  width:100%;
+  height:auto;
+  overflow:visible;
+}
+.axis-line{stroke:rgba(23,27,34,.18);stroke-width:1}
+.grid-line{stroke:rgba(23,27,34,.08);stroke-width:1}
+.tick-text{
+  fill:var(--lepas-slate);
+  font-size:11px;
+  font-family:"Source Sans 3",Arial,sans-serif;
+}
+.direct-label{
+  fill:var(--lepas-charcoal);
+  font-size:11px;
+  font-weight:700;
+  font-family:"Source Sans 3",Arial,sans-serif;
+}
+.legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 16px;
+  margin:0 0 12px;
+  padding:0;
+  list-style:none;
+  color:var(--lepas-slate);
+  font-size:12px;
+}
+.legend li{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+.key{
+  width:10px;
+  height:10px;
+  border-radius:2px;
+  flex:0 0 auto;
+}
+.relationship{
+  min-height:360px;
+  border:1px solid rgba(23,27,34,.1);
+  background:rgba(255,255,255,.46);
+}
+.node rect{
+  fill:#fff;
+  stroke:rgba(23,27,34,.16);
+  stroke-width:1.2;
+  rx:5;
+}
+.node.active rect{
+  stroke:var(--lepas-gold);
+  stroke-width:2.4;
+}
+.node text{
+  fill:var(--ink);
+  font-family:"Source Sans 3",Arial,sans-serif;
+  pointer-events:none;
+}
+.rel-edge{
+  fill:none;
+  stroke:rgba(48,96,120,.36);
+  stroke-width:1.6;
+}
+.rel-edge.strong{
+  stroke:var(--lepas-teal);
+  stroke-width:2.4;
+}
+.leaderboard{
+  display:grid;
+  gap:8px;
+}
+.bar-row{
+  display:grid;
+  grid-template-columns:minmax(150px,1fr) minmax(160px,1.3fr) 78px;
+  gap:12px;
+  align-items:center;
+  font-size:13px;
+}
+.bar-name{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:var(--lepas-charcoal);
+}
+.bar-track{
+  height:16px;
+  background:rgba(23,27,34,.08);
+  border-radius:2px;
+  overflow:hidden;
+}
+.bar-fill{
+  height:100%;
+  width:var(--w);
+  background:var(--c,var(--lepas-teal));
+}
+.bar-value{
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+  color:var(--lepas-slate);
+}
+.data-table-wrap{
+  overflow:auto;
+  border-top:1px solid rgba(23,27,34,.12);
+}
+.data-table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:860px;
+  font-size:12.5px;
+  font-variant-numeric:tabular-nums;
+}
+.data-table th,
+.data-table td{
+  padding:9px 10px;
+  border-bottom:1px solid rgba(23,27,34,.08);
+  text-align:right;
+  white-space:nowrap;
+}
+.data-table th{
+  position:sticky;
+  top:0;
+  background:var(--lepas-mist);
+  color:var(--lepas-slate);
+  font-size:10.5px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.data-table th:first-child,
+.data-table td:first-child{text-align:left}
+.pill{
+  display:inline-flex;
+  align-items:center;
+  min-height:22px;
+  padding:2px 8px;
+  border-radius:999px;
+  background:#fff;
+  color:var(--lepas-charcoal);
+}
+.tooltip{
+  position:fixed;
+  z-index:30;
+  pointer-events:none;
+  opacity:0;
+  transform:translateY(4px);
+  transition:opacity .12s, transform .12s;
+  background:#fff;
+  border:1px solid rgba(23,27,34,.14);
+  box-shadow:0 16px 38px -24px rgba(23,27,34,.5);
+  padding:9px 11px;
+  max-width:280px;
+  font-size:12px;
+}
+.tooltip.on{
+  opacity:1;
+  transform:none;
+}
+.tooltip b{display:block;margin-bottom:4px}
+@media (max-width:1900px){
+  :root{--header-h:93px}
+  .topbar{
+    display:grid;
+    grid-template-columns:330px minmax(550px,1fr) 650px;
+    padding-left:82px;
+    padding-right:70px;
+  }
+  .brand{width:210px}
+  .nav,.utility{position:static;height:auto;transform:none}
+  .nav{justify-content:center;gap:48px}
+  .utility{justify-content:flex-end;gap:62px}
+  .nav a,.utility a{font-size:21px}
+  .hero{height:min(745px,calc(100vw * 745 / 2850));min-height:430px}
+}
+@media (max-width:1080px){
+  .report-hero{grid-template-columns:1fr}
+  .metric-grid{grid-template-columns:repeat(3,1fr)}
+  .panel,.panel.wide,.panel.side{grid-column:1/-1}
+}
+@media (max-width:1320px){
+  :root{--header-h:78px}
+  .topbar{
+    display:flex;
+    padding:0 28px;
+  }
+  .brand{width:170px}
+  .nav{
+    position:absolute;
+    left:50%;
+    top:0;
+    height:var(--header-h);
+    transform:translateX(-50%);
+    justify-content:center;
+    gap:32px;
+  }
+  .utility{display:none}
+  .nav a{font-size:17px}
+  .hero{min-height:360px}
+}
+@media (max-width:720px){
+  :root{--header-h:66px}
+  .topbar{
+    display:flex;
+    justify-content:space-between;
+    padding:0 18px;
+  }
+  .brand{width:145px}
+  .nav{gap:18px}
+  .nav a:nth-child(n+3){display:none}
+  .nav a{font-size:15px}
+  .chev{width:9px;height:9px}
+  .hero{
+    height:56vh;
+    min-height:330px;
+    background-position:center top;
+  }
+  .lower-white{height:72px}
+  .report-shell{padding-left:16px;padding-right:16px}
+  .metric-grid{grid-template-columns:repeat(2,1fr)}
+  .metric:nth-child(odd){border-left:0;padding-left:0}
+  .bar-row{grid-template-columns:1fr;gap:5px}
+  .bar-value{text-align:left}
+}
+
+/* MK1-style operating report pass */
+.report{
+  --ops-bg:#061416;
+  --ops-panel:#0b2024;
+  --ops-panel-2:#102b31;
+  --ops-line:#21434a;
+  --ops-text:#eef8f6;
+  --ops-muted:#91aaa8;
+  --ops-soft:#c8d8d5;
+  --ops-signal:#d9e462;
+  --ops-blue:#6bb3c7;
+  --ops-green:#73c88f;
+  --ops-rust:#d08152;
+  background:var(--ops-bg);
+  color:var(--ops-text);
+  font-family:"Source Sans 3",Arial,"Helvetica Neue",Helvetica,sans-serif;
+  border-top:0;
+}
+.report:before{
+  content:"";
+  display:block;
+  height:5px;
+  background:
+    linear-gradient(90deg,rgba(80,168,112,.25),rgba(48,96,120,.22),rgba(217,228,98,.28)),
+    linear-gradient(90deg,var(--lepas-green),#6bb3c7 48%,var(--ops-signal));
+  box-shadow:
+    0 0 18px rgba(107,179,199,.52),
+    0 0 34px rgba(217,228,98,.34),
+    0 12px 38px rgba(80,168,112,.18);
+  filter:saturate(1.22);
+}
+.report-shell{
+  max-width:1420px;
+  padding:clamp(34px,5vw,72px) clamp(18px,4vw,58px) 82px;
+}
+.report-kicker{
+  color:var(--ops-muted);
+  letter-spacing:.18em;
+  margin-bottom:22px;
+}
+.report-kicker:before{display:none}
+.report-hero{
+  grid-template-columns:minmax(0,1.08fr) minmax(360px,.92fr);
+  align-items:start;
+  border-bottom:0;
+  gap:clamp(28px,4vw,58px);
+  padding-bottom:10px;
+}
+.report-title{
+  max-width:820px;
+  color:#fff;
+  font-size:clamp(42px,6.2vw,88px);
+  line-height:.93;
+  letter-spacing:-.045em;
+  text-transform:uppercase;
+}
+.report-title span{
+  max-width:12ch;
+  margin-top:.12em;
+  color:var(--ops-soft);
+  font-weight:500;
+  font-size:clamp(34px,5.2vw,74px);
+  line-height:.95;
+  letter-spacing:-.055em;
+}
+.report-verdict{
+  max-width:68ch;
+  color:var(--ops-soft);
+  font-size:17px;
+}
+.report-verdict b,
+.standout{
+  color:#fff;
+  font-weight:750;
+}
+.scope-card{
+  padding:0;
+  border:1px solid var(--ops-line);
+  background:linear-gradient(180deg,rgba(16,43,49,.94),rgba(7,20,23,.94));
+}
+.scope-card h2{
+  margin:0;
+  padding:14px 16px;
+  border-bottom:1px solid var(--ops-line);
+  color:#fff;
+  font-size:14px;
+  letter-spacing:.02em;
+  text-transform:uppercase;
+}
+.scope-card p{
+  color:var(--ops-muted);
+  padding:0 16px;
+}
+.scope-card > p:first-of-type{margin:14px 0}
+.scope-actions{
+  margin:0;
+  padding:12px 16px;
+  border-top:1px solid rgba(255,255,255,.06);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  gap:6px;
+}
+.scope-btn{
+  background:#10232b;
+  border-color:#263f48;
+  color:var(--ops-soft);
+  border-radius:0;
+  padding:9px 13px;
+}
+.scope-btn:hover{border-color:var(--ops-blue);color:#fff}
+.scope-btn:focus-visible{outline:2px solid var(--ops-signal);outline-offset:2px}
+.scope-btn[aria-pressed="true"]{
+  background:var(--ops-signal);
+  color:#152023;
+  border-color:var(--ops-signal);
+}
+.metric-grid{
+  margin-top:28px;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:1px;
+  border:1px solid var(--ops-line);
+  background:var(--ops-line);
+}
+.metric{
+  border-left:0;
+  padding:16px 18px 17px;
+  background:var(--ops-panel);
+}
+.metric:first-child{padding-left:18px}
+.metric.lead{
+  background:linear-gradient(145deg,#12343c,#0d2328);
+}
+.metric .group{
+  display:block;
+  margin-bottom:10px;
+  color:var(--ops-signal);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.metric .label{
+  color:var(--ops-muted);
+  font-size:11px;
+  letter-spacing:.04em;
+}
+.metric .value{
+  color:#fff;
+  font-size:clamp(24px,2.6vw,36px);
+}
+.metric.lead .value{color:var(--ops-signal)}
+.metric .note{color:var(--ops-muted)}
+.insights-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:1px;
+  margin-top:18px;
+  border:1px solid var(--ops-line);
+  background:var(--ops-line);
+}
+.insight{
+  background:#071a1d;
+  padding:16px;
+}
+.insight .eyebrow{
+  color:var(--ops-muted);
+  font-size:10px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.insight h3{
+  margin:8px 0 7px;
+  color:#fff;
+  font-family:Montserrat,Arial,sans-serif;
+  font-size:16px;
+}
+.insight p{
+  margin:0;
+  color:var(--ops-soft);
+  font-size:13px;
+  line-height:1.45;
+}
+.map-section{
+  padding-top:22px;
+}
+.map-section h2,
+.report-notes h2{
+  margin:0 0 6px;
+  color:#fff;
+  font-family:Montserrat,Arial,sans-serif;
+  font-size:24px;
+  letter-spacing:-.018em;
+}
+.map-section .sub,
+.report-notes .sub{
+  margin:0 0 18px;
+  max-width:74ch;
+  color:var(--ops-muted);
+  font-size:14px;
+  line-height:1.5;
+}
+.mapshell{
+  border:1px solid var(--ops-line);
+  background:linear-gradient(180deg,#071a1d,#041012);
+}
+.maptools{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex-wrap:wrap;
+  padding:12px 16px;
+  border-bottom:1px solid var(--ops-line);
+}
+.seg{
+  display:inline-flex;
+  border:1px solid var(--ops-line);
+  background:rgba(255,255,255,.025);
+}
+.seg button{
+  appearance:none;
+  border:0;
+  border-left:1px solid var(--ops-line);
+  background:transparent;
+  color:var(--ops-soft);
+  cursor:pointer;
+  font:600 12px/1 "Source Sans 3",Arial,sans-serif;
+  padding:9px 13px;
+}
+.seg button:first-child{border-left:0}
+.seg button:hover{color:#fff;background:rgba(255,255,255,.04)}
+.seg button:focus-visible{outline:2px solid var(--ops-signal);outline-offset:-2px}
+.seg button[aria-pressed="true"]{
+  background:var(--ops-signal);
+  color:#152023;
+}
+.maplegend{
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  color:var(--ops-muted);
+  font-size:12px;
+}
+.rampbar{
+  width:132px;
+  height:9px;
+  background:linear-gradient(90deg,#17333a,#6bb3c7 55%,#d9e462);
+}
+.sa-map{
+  display:block;
+  width:100%;
+  height:auto;
+  min-height:360px;
+  touch-action:manipulation;
+}
+.sa-map .map-bg{
+  fill:#061416;
+}
+.sa-map .province{
+  stroke:#061416;
+  stroke-width:3;
+  cursor:pointer;
+  transition:filter .14s, opacity .14s;
+}
+.sa-map .province:hover,
+.sa-map .province.active{
+  filter:brightness(1.22);
+}
+.sa-map .province.mute{
+  opacity:.38;
+}
+.sa-map .map-label{
+  fill:#f4fbf8;
+  font-size:13px;
+  font-weight:800;
+  pointer-events:none;
+  paint-order:stroke;
+  stroke:#061416;
+  stroke-width:4px;
+  stroke-linejoin:round;
+}
+.sa-map .map-value{
+  fill:var(--ops-soft);
+  font-size:11px;
+  pointer-events:none;
+  paint-order:stroke;
+  stroke:#061416;
+  stroke-width:3px;
+  stroke-linejoin:round;
+}
+.map-readout{
+  display:grid;
+  grid-template-columns:1fr repeat(4,minmax(100px,.26fr));
+  gap:1px;
+  border-top:1px solid var(--ops-line);
+  background:var(--ops-line);
+}
+.map-readout > div{
+  background:#071a1d;
+  padding:13px 15px;
+}
+.map-readout .name{
+  color:#fff;
+  font:700 16px/1.2 Montserrat,Arial,sans-serif;
+}
+.map-readout .k{
+  display:block;
+  color:var(--ops-muted);
+  font-size:10px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.map-readout .v{
+  display:block;
+  margin-top:4px;
+  color:#fff;
+  font:750 18px/1.1 Montserrat,Arial,sans-serif;
+}
+.viz-grid{
+  gap:18px;
+  padding-top:22px;
+}
+.panel{
+  background:var(--ops-panel);
+  border:1px solid var(--ops-line);
+}
+.panel header{
+  padding:13px 16px;
+  border-bottom:1px solid var(--ops-line);
+}
+.panel h3{
+  color:#fff;
+  font-size:15px;
+}
+.panel .hint{
+  margin:0;
+  padding:13px 16px 15px;
+  max-width:none;
+  color:var(--ops-muted);
+}
+.panel .chart,
+.panel .leaderboard,
+.panel .data-table-wrap{
+  padding:16px;
+}
+.panel .chart{padding:0 16px 16px}
+.matrix-tabs{
+  display:inline-flex;
+  border:1px solid #263f48;
+  background:#0a1b20;
+}
+.matrix-tabs button{
+  appearance:none;
+  border:0;
+  border-left:1px solid #263f48;
+  background:transparent;
+  color:var(--ops-muted);
+  font:700 12px/1 "Source Sans 3",Arial,sans-serif;
+  padding:9px 14px;
+}
+.matrix-tabs button:first-child{border-left:0}
+.matrix-tabs button[aria-pressed="true"]{
+  background:#d7a928;
+  color:#121a1e;
+}
+.matrix-tabs button[disabled]{
+  opacity:.72;
+}
+.heat-label{
+  fill:var(--ops-soft);
+  font:600 12px/1 "Source Sans 3",Arial,sans-serif;
+}
+.heat-value{
+  fill:#f6fbfa;
+  font:800 13px/1 Montserrat,Arial,sans-serif;
+}
+.heat-missing{
+  fill:var(--ops-muted);
+  font:700 13px/1 Montserrat,Arial,sans-serif;
+}
+.scatter-label{
+  fill:var(--ops-soft);
+  font:600 11px/1 "Source Sans 3",Arial,sans-serif;
+  paint-order:stroke;
+  stroke:#071416;
+  stroke-width:4px;
+  stroke-linejoin:round;
+}
+.axis-line{stroke:rgba(238,248,246,.22)}
+.grid-line{stroke:rgba(238,248,246,.08)}
+.tick-text{fill:var(--ops-muted)}
+.direct-label{fill:#fff}
+.relationship{
+  border:0;
+  background:transparent;
+}
+.node rect{
+  fill:#102b31;
+  stroke:#31535c;
+}
+.node.active rect{
+  stroke:var(--ops-signal);
+  stroke-width:2.2;
+}
+.node text{fill:#fff}
+.rel-edge{stroke:rgba(107,179,199,.32)}
+.rel-edge.strong{stroke:var(--ops-blue)}
+.bar-name{color:var(--ops-soft)}
+.bar-track{
+  background:rgba(255,255,255,.07);
+  border-radius:0;
+}
+.bar-value{color:var(--ops-muted)}
+.data-table-wrap{
+  border-top:0;
+}
+.data-table{
+  color:var(--ops-soft);
+}
+.data-table th,
+.data-table td{
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.data-table th{
+  background:#071a1d;
+  color:var(--ops-muted);
+}
+.data-table tbody tr:hover{background:rgba(217,228,98,.06)}
+.pill{
+  background:#10232b;
+  color:var(--ops-soft);
+  border-radius:0;
+  border:1px solid #263f48;
+}
+.tooltip{
+  background:#fff;
+  color:#071416;
+}
+.nav a.active{
+  color:var(--lepas-teal);
+  font-weight:700;
+}
+@media (max-width:1080px){
+  .metric-grid{grid-template-columns:repeat(2,1fr)}
+  .insights-grid{grid-template-columns:1fr}
+  .map-readout{grid-template-columns:repeat(2,1fr)}
+  .map-readout > div:first-child{grid-column:1/-1}
+}
+@media (max-width:720px){
+  .report-title span{font-size:clamp(30px,10vw,48px)}
+  .metric-grid{grid-template-columns:1fr}
+  .maplegend{width:100%;margin-left:0}
+  .sa-map{min-height:300px}
+  .map-readout{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<main class="site" aria-label="Lepas homepage">
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Lepas">Lepas</a>
+    <nav class="nav" aria-label="Primary navigation">
+      <a href="#marketing-report" data-report-scope="Meta">Meta</a>
+      <a href="#marketing-report" data-report-scope="TikTok">TikTok</a>
+      <a href="#marketing-report" data-report-scope="Programmatic">Programmatic</a>
+      <a href="#marketing-report" data-report-scope="YouTube">YouTube</a>
+    </nav>
+    <nav class="utility" aria-label="Secondary navigation">
+      <a href="#">Dealers</a>
+      <a href="#">Test Drive</a>
+      <a href="#">L6 ICE Survey <span class="external" aria-hidden="true"></span></a>
+    </nav>
+  </header>
+  <section class="hero" aria-label="Three Lepas vehicles parked by the coast">
+    <canvas class="light-canvas" aria-hidden="true"></canvas>
+  </section>
+  <section class="report" id="marketing-report" aria-label="LEPAS marketing performance report">
+    <div class="report-shell">
+      <p class="report-kicker">LEPAS South Africa · August 2026 · Test drive performance</p>
+      <div class="report-hero">
+        <div>
+          <h1 class="report-title" id="reportFigure">987<span>test drives booked</span></h1>
+          <p class="report-verdict" id="reportVerdict"></p>
+        </div>
+        <aside class="scope-card">
+          <h2 id="scopeTitle">All Market View</h2>
+          <p id="scopeCopy"></p>
+          <div class="scope-actions" aria-label="Report channel filters">
+            <button class="scope-btn" type="button" data-scope="All" aria-pressed="true">All market</button>
+            <button class="scope-btn" type="button" data-scope="Meta" aria-pressed="false">Meta</button>
+            <button class="scope-btn" type="button" data-scope="TikTok" aria-pressed="false">TikTok</button>
+            <button class="scope-btn" type="button" data-scope="Programmatic" aria-pressed="false">Programmatic</button>
+            <button class="scope-btn" type="button" data-scope="YouTube" aria-pressed="false">YouTube</button>
+          </div>
+        </aside>
+      </div>
+
+      <div class="metric-grid" id="metricGrid" aria-label="Headline marketing metrics"></div>
+      <div class="insights-grid" id="insightGrid" aria-label="Marketing diagnostics"></div>
+
+      <section class="map-section" aria-label="Campaign delivery map">
+        <h2>Where the campaign landed</h2>
+        <p class="sub">Provincial demand from the workbook location tab. Shading follows the selected measure; select a province to pin the readout.</p>
+        <div class="mapshell">
+          <div class="maptools">
+            <div class="seg" role="group" aria-label="Map metric">
+              <button type="button" data-map-metric="bookings" aria-pressed="true">Bookings</button>
+              <button type="button" data-map-metric="qualified" aria-pressed="false">Qualified</button>
+              <button type="button" data-map-metric="spend" aria-pressed="false">Spend</button>
+              <button type="button" data-map-metric="cpl" aria-pressed="false">CPL</button>
+            </div>
+            <div class="maplegend"><span>low</span><span class="rampbar"></span><span>high</span></div>
+          </div>
+          <svg class="sa-map" id="saMap" viewBox="0 0 1000 720" role="img" aria-label="South Africa provincial campaign delivery map"></svg>
+          <div class="map-readout" id="mapReadout"></div>
+        </div>
+      </section>
+
+      <div class="viz-grid">
+        <section class="panel wide">
+          <header><h3>Daily booking momentum</h3><span class="pill" id="dailyPill"></span></header>
+          <p class="hint">Daily bookings with CPL pressure overlaid. This is the pacing view: volume matters, but only when the cost line stays under control.</p>
+          <svg class="chart" id="dailyChart" viewBox="0 0 860 330" role="img" aria-label="Daily bookings and CPL trend"></svg>
+        </section>
+
+        <section class="panel side">
+          <header><h3>Funnel integrity</h3><span class="pill">Impression to qualified</span></header>
+          <p class="hint">The conversion stack exposes where each selected channel leaks attention before test drive booking.</p>
+          <svg class="chart" id="funnelChart" viewBox="0 0 420 330" role="img" aria-label="Marketing funnel from impressions to qualified bookings"></svg>
+        </section>
+
+        <section class="panel">
+          <header><h3>Performance quadrant</h3><span class="pill">Spend × CPL</span></header>
+          <p class="hint">Bubble size is bookings. Left is cheaper, higher is more bookings. In scoped views, each mark becomes a campaign.</p>
+          <svg class="chart" id="scatterChart" viewBox="0 0 620 360" role="img" aria-label="Spend and CPL performance quadrant"></svg>
+        </section>
+
+        <section class="panel">
+          <header><h3>Relationship map</h3><span class="pill">Channel → model → audience</span></header>
+          <p class="hint">A schema-style read of the media plan: selected channel, vehicle model demand, and audience strategy connections.</p>
+          <svg class="chart relationship" id="relationshipChart" viewBox="0 0 620 360" role="img" aria-label="Relationship graph of channel, model, and audience performance"></svg>
+        </section>
+
+        <section class="panel">
+          <header>
+            <h3>Creative response grid</h3>
+            <div class="matrix-tabs" aria-label="Creative matrix measure">
+              <button type="button" aria-pressed="true">CTR</button>
+              <button type="button" aria-pressed="false" disabled>Bookings</button>
+            </div>
+          </header>
+          <p class="hint">Click-through rate by creative format and LEPAS model. Rows are ranked by booked test drives in the active channel scope.</p>
+          <svg class="chart" id="creativeHeat" viewBox="0 0 620 430" role="img" aria-label="Creative response heatmap"></svg>
+        </section>
+
+        <section class="panel">
+          <header><h3>Spend against response</h3><span class="pill">bubble = impressions</span></header>
+          <p class="hint">Each bubble is a creative row. Spend runs left to right; CTR climbs upward; bigger bubbles carried more impressions.</p>
+          <svg class="chart" id="creativeScatter" viewBox="0 0 620 430" role="img" aria-label="Creative spend against click-through response"></svg>
+        </section>
+
+        <section class="panel">
+          <header><h3>Where the budget sits</h3><span class="pill">Placement pressure</span></header>
+          <p class="hint">Placement rows rank spend and reveal whether scale is coming from efficient surfaces or expensive reach.</p>
+          <div class="leaderboard" id="placementList"></div>
+        </section>
+
+        <section class="panel">
+          <header><h3>Market geography</h3><span class="pill">Province demand</span></header>
+          <p class="hint" id="geoHint">Provincial bookings and qualified lead depth from the workbook location tab.</p>
+          <div class="leaderboard" id="geoList"></div>
+        </section>
+
+        <section class="panel full">
+          <header><h3>Campaign drill table</h3><span class="pill" id="tablePill"></span></header>
+          <p class="hint">Campaigns are sorted by booked test drives. Use the menu above to scope the table to a media channel.</p>
+          <div class="data-table-wrap">
+            <table class="data-table" id="campaignTable"></table>
+          </div>
+        </section>
+      </div>
+    </div>
+    <div class="tooltip" id="reportTip" role="status" aria-live="polite"></div>
+  </section>
+</main>
+<script src="./assets/lepas-report-data.js"></script>
+<script src="./assets/za-provinces.js"></script>
+<script>
+(() => {
+  const DATA = window.LEPAS_REPORT_DATA;
+  if (!DATA) return;
+
+  const COLORS = {
+    All:"#d9e462", Meta:"#6bb3c7", TikTok:"#73c88f",
+    Programmatic:"#d08152", YouTube:"#9da7ff", X:"#8b9492"
+  };
+  const LABELS = {
+    All:"All Market", Meta:"Meta", TikTok:"TikTok",
+    Programmatic:"Programmatic", YouTube:"YouTube / OLV", X:"X"
+  };
+  const state = { scope:"All", mapMetric:"bookings", province:null };
+  const PROVINCES = window.LEPAS_ZA_PROVINCES || [];
+  const $ = (sel) => document.querySelector(sel);
+  const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+  const fmtN = (n) => Math.round(n || 0).toLocaleString("en-ZA");
+  const fmtR = (n) => "R" + Math.round(n || 0).toLocaleString("en-ZA");
+  const fmtR1 = (n) => "R" + (n || 0).toLocaleString("en-ZA", { maximumFractionDigits: 1 });
+  const pct = (n, d=1) => ((n || 0) * 100).toFixed(d) + "%";
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  }[c]));
+  const tip = $("#reportTip");
+
+  function totalsFor(scope){
+    return scope === "All" ? DATA.totals : DATA.scopes[scope];
+  }
+  function inScope(row){
+    return state.scope === "All" || row.scope === state.scope;
+  }
+  function roll(rows){
+    const a = { spend:0, impressions:0, clicks:0, lpv:0, bookings:0, qualified:0, pipeline:0 };
+    rows.forEach((r) => {
+      a.spend += r.spend || 0; a.impressions += r.impressions || 0; a.clicks += r.clicks || 0;
+      a.lpv += r.lpv || 0; a.bookings += r.bookings || 0; a.qualified += r.qualified || 0;
+      a.pipeline += r.pipeline || 0;
+    });
+    a.cpl = a.bookings ? a.spend / a.bookings : 0;
+    a.cpql = a.qualified ? a.spend / a.qualified : 0;
+    a.ctr = a.impressions ? a.clicks / a.impressions : 0;
+    a.cvr = a.lpv ? a.bookings / a.lpv : 0;
+    return a;
+  }
+  function aggBy(rows, key){
+    const map = new Map();
+    rows.forEach((r) => {
+      const k = r[key] || "Unknown";
+      const a = map.get(k) || { name:k, spend:0, impressions:0, clicks:0, lpv:0, bookings:0, qualified:0, pipeline:0 };
+      a.spend += r.spend || 0; a.impressions += r.impressions || 0; a.clicks += r.clicks || 0;
+      a.lpv += r.lpv || 0; a.bookings += r.bookings || 0; a.qualified += r.qualified || 0; a.pipeline += r.pipeline || 0;
+      map.set(k, a);
+    });
+    return Array.from(map.values()).map((a) => ({...a, cpl:a.bookings ? a.spend / a.bookings : 0}));
+  }
+
+  function setScope(scope, shouldScroll=false){
+    state.scope = scope;
+    state.province = null;
+    $$(".scope-btn").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.scope === scope)));
+    $$(".nav a[data-report-scope]").forEach((a) => a.classList.toggle("active", a.dataset.reportScope === scope));
+    render();
+    if (shouldScroll) $("#marketing-report").scrollIntoView({ behavior:"smooth", block:"start" });
+  }
+
+  function showTip(html, ev){
+    tip.innerHTML = html;
+    tip.classList.add("on");
+    moveTip(ev);
+  }
+  function moveTip(ev){
+    const pad = 16;
+    tip.style.left = Math.min(ev.clientX + pad, window.innerWidth - 300) + "px";
+    tip.style.top = Math.min(ev.clientY + pad, window.innerHeight - 120) + "px";
+  }
+  function hideTip(){ tip.classList.remove("on"); }
+  function attrs(obj){
+    return Object.entries(obj).map(([k,v]) => `${k}="${esc(v)}"`).join(" ");
+  }
+
+  function renderHero(){
+    const t = totalsFor(state.scope) || DATA.totals;
+    const scoped = state.scope !== "All";
+    const target = DATA.targets.cpl;
+    const under = t.cpl <= target;
+    const cplText = fmtR1(t.cpl);
+    $("#reportFigure").innerHTML = `${fmtN(t.bookings)}<span>test drives booked</span>`;
+    $("#reportVerdict").innerHTML = scoped
+      ? `${LABELS[state.scope]} delivered <b>${fmtN(t.bookings)}</b> booked test drives at <b>${cplText}</b> CPL on <b>${fmtR(t.spend)}</b> spend. ${under ? "It is inside" : "It is outside"} the R${target} CPL benchmark, with <b>${fmtN(t.qualified)}</b> qualified bookings.`
+      : `August returned <b>${fmtN(t.bookings)}</b> booked test drives at <b>${cplText}</b> blended CPL, under the R${target} benchmark on <b>${fmtR(t.spend)}</b> of spend. Qualified bookings sit at <b>${fmtN(t.qualified)}</b>, creating an estimated <b>${fmtR(t.pipeline)}</b> pipeline.`;
+    $("#scopeTitle").textContent = scoped ? `${LABELS[state.scope]} operating view` : "All market operating view";
+    $("#scopeCopy").textContent = scoped
+      ? "The whole report is scoped to the selected media channel. Campaigns, creatives, model demand and trend charts update together."
+      : "Showing the full August media workbook across all available paid channels.";
+  }
+
+  function renderMetrics(){
+    const t = totalsFor(state.scope) || DATA.totals;
+    const metrics = [
+      ["Delivery", "Spend", fmtR(t.spend), state.scope === "All" ? "Full media budget" : "Scoped spend"],
+      ["Delivery", "Impressions", fmtN(t.impressions), "opportunities to see"],
+      ["Response", "Clicks", fmtN(t.clicks), `${pct(t.ctr,2)} CTR`],
+      ["Response", "LPVs", fmtN(t.lpv), `${pct(t.lpvRate,0)} click-to-page rate`],
+      ["Conversion", "Bookings", fmtN(t.bookings), "booked test drives"],
+      ["Conversion", "Qualified", fmtN(t.qualified), `${pct(t.qRate,0)} of bookings`],
+      ["Efficiency", "CPL", fmtR1(t.cpl), t.cpl <= DATA.targets.cpl ? "inside R450 target" : "above R450 target"],
+      ["Revenue", "Pipeline", fmtR(t.pipeline), "estimated dealer value"]
+    ];
+    $("#metricGrid").innerHTML = metrics.map(([g,l,v,n], i) => `
+      <div class="metric ${i === 0 ? "lead" : ""}"><span class="group">${g}</span><span class="label">${l}</span><span class="value">${v}</span><span class="note">${n}</span></div>
+    `).join("");
+  }
+
+  function renderInsights(){
+    const t = totalsFor(state.scope) || DATA.totals;
+    const channelRows = state.scope === "All"
+      ? Object.entries(DATA.scopes).map(([scope, row]) => ({scope, ...row}))
+      : DATA.campaigns.filter(inScope).map((row) => ({...row, scope:row.campaign.replace("LEP_ZA_AUG26_","")}));
+    const best = channelRows.filter((r)=>r.bookings > 0).sort((a,b)=>a.cpl-b.cpl)[0];
+    const volume = channelRows.sort((a,b)=>b.bookings-a.bookings)[0];
+    const spendShare = t.spend ? (volume?.spend || 0) / t.spend : 0;
+    const targetDelta = t.cpl ? (DATA.targets.cpl - t.cpl) / DATA.targets.cpl : 0;
+    const cards = [
+      {
+        eyebrow:"Live diagnostic",
+        title:t.cpl <= DATA.targets.cpl ? "Cost target is holding" : "Cost target is under pressure",
+        copy:t.cpl <= DATA.targets.cpl
+          ? `CPL is ${pct(targetDelta,0)} below the R${DATA.targets.cpl} benchmark. Scale can be defended while qualified rate stays near ${pct(t.qRate,0)}.`
+          : `CPL is ${pct(Math.abs(targetDelta),0)} above the R${DATA.targets.cpl} benchmark. Reduce waste before adding budget.`
+      },
+      {
+        eyebrow:"Spend concentration",
+        title:volume ? `${volume.scope || volume.name} carries the work` : "No concentration found",
+        copy:volume ? `${volume.scope || volume.name} holds ${pct(spendShare,0)} of spend and ${fmtN(volume.bookings)} bookings in the active view.` : "No scoped rows are available."
+      },
+      {
+        eyebrow:"Relative efficiency",
+        title:best ? `${best.scope || best.name} is the cleanest route` : "Efficiency not available",
+        copy:best ? `Lowest observed CPL is ${fmtR1(best.cpl)} with ${fmtN(best.bookings)} bookings. Use it as the planning reference, not a universal promise.` : "No booked test drives are available in this scope."
+      }
+    ];
+    $("#insightGrid").innerHTML = cards.map((card)=>`
+      <article class="insight">
+        <div class="eyebrow">${esc(card.eyebrow)}</div>
+        <h3>${esc(card.title)}</h3>
+        <p>${esc(card.copy)}</p>
+      </article>
+    `).join("");
+  }
+
+  function provinceRows(){
+    const rows = DATA.geo.filter(inScope);
+    return Array.from(rows.reduce((m,r)=>{
+      const a = m.get(r.province) || {province:r.province, spend:0, impressions:0, clicks:0, bookings:0, qualified:0};
+      a.spend += r.spend || 0;
+      a.impressions += r.impressions || 0;
+      a.clicks += r.clicks || 0;
+      a.bookings += r.bookings || 0;
+      a.qualified += r.qualified || 0;
+      a.cpl = a.bookings ? a.spend / a.bookings : 0;
+      m.set(r.province, a);
+      return m;
+    }, new Map()).values());
+  }
+
+  function mapValue(row){
+    if (!row) return 0;
+    if (state.mapMetric === "cpl") return row.cpl || 0;
+    return row[state.mapMetric] || 0;
+  }
+
+  function mapFormat(metric, value){
+    if (metric === "spend" || metric === "cpl") return metric === "cpl" ? fmtR1(value) : fmtR(value);
+    return fmtN(value);
+  }
+
+  function mapColor(norm){
+    const n = Math.max(0, Math.min(1, norm || 0));
+    if (n < .5){
+      const t = n / .5;
+      return `rgb(${Math.round(23 + (107-23)*t)}, ${Math.round(51 + (179-51)*t)}, ${Math.round(58 + (199-58)*t)})`;
+    }
+    const t = (n - .5) / .5;
+    return `rgb(${Math.round(107 + (217-107)*t)}, ${Math.round(179 + (228-179)*t)}, ${Math.round(199 + (98-199)*t)})`;
+  }
+
+  function renderMap(){
+    $$(".seg button[data-map-metric]").forEach((b) => {
+      b.setAttribute("aria-pressed", String(b.dataset.mapMetric === state.mapMetric));
+    });
+    const rows = provinceRows();
+    const byProvince = Object.fromEntries(rows.map((r) => [r.province, r]));
+    const values = rows.map(mapValue).filter((v) => Number.isFinite(v));
+    const metric = state.mapMetric;
+    const highIsBad = metric === "cpl";
+    const max = Math.max(...values, 1);
+    const min = Math.min(...values, 0);
+    const range = Math.max(max - min, 1);
+    const selected = state.province && byProvince[state.province]
+      ? byProvince[state.province]
+      : rows.slice().sort((a,b) => highIsBad ? mapValue(a)-mapValue(b) : mapValue(b)-mapValue(a))[0];
+    const metricLabel = {bookings:"Bookings", qualified:"Qualified", spend:"Spend", cpl:"CPL"}[metric];
+    const shapes = PROVINCES.map((p) => {
+      const r = byProvince[p.name];
+      const val = mapValue(r);
+      const normRaw = (val - min) / range;
+      const norm = highIsBad ? 1 - normRaw : normRaw;
+      const active = state.province === p.name;
+      const muted = state.province && !active;
+      return `<g data-province="${esc(p.name)}" ${attrs({"data-tip":`${p.name}<br>${metricLabel}: ${mapFormat(metric, val)}<br>Bookings: ${fmtN(r?.bookings || 0)}<br>Qualified: ${fmtN(r?.qualified || 0)}`})}>
+        <path class="province ${active ? "active" : ""} ${muted ? "mute" : ""}" d="${p.path}" fill="${r ? mapColor(norm) : "#10232b"}"></path>
+        <text class="map-label" x="${p.label[0]}" y="${p.label[1]}" text-anchor="middle">${p.code}</text>
+        <text class="map-value" x="${p.label[0]}" y="${p.label[1]+17}" text-anchor="middle">${r ? mapFormat(metric, val) : "—"}</text>
+      </g>`;
+    }).join("");
+    $("#saMap").innerHTML = `<rect class="map-bg" width="1000" height="500"></rect>${shapes}`;
+    $("#mapReadout").innerHTML = selected ? `
+      <div><span class="k">Selected province</span><span class="name">${esc(selected.province)}</span></div>
+      <div><span class="k">Spend</span><span class="v">${fmtR(selected.spend)}</span></div>
+      <div><span class="k">Bookings</span><span class="v">${fmtN(selected.bookings)}</span></div>
+      <div><span class="k">Qualified</span><span class="v">${fmtN(selected.qualified)}</span></div>
+      <div><span class="k">CPL</span><span class="v">${fmtR1(selected.cpl)}</span></div>
+    ` : `
+      <div><span class="k">Selected province</span><span class="name">No isolated provincial data in this scope</span></div>
+      <div><span class="k">Spend</span><span class="v">—</span></div>
+      <div><span class="k">Bookings</span><span class="v">—</span></div>
+      <div><span class="k">Qualified</span><span class="v">—</span></div>
+      <div><span class="k">CPL</span><span class="v">—</span></div>
+    `;
+    $$("#saMap [data-province]").forEach((el) => {
+      el.addEventListener("click", () => {
+        const name = el.getAttribute("data-province");
+        state.province = state.province === name ? null : name;
+        renderMap();
+        wireTips();
+      });
+    });
+  }
+
+  function svgDaily(){
+    const rows = DATA.daily.filter(inScope);
+    const byDate = Array.from(new Set(DATA.daily.map((d) => d.date))).sort();
+    const values = byDate.map((date) => ({ date, ...roll(rows.filter((r) => r.date === date)) }));
+    const W=860,H=330,L=46,R=18,T=24,B=42, iw=W-L-R, ih=H-T-B;
+    const maxB = Math.max(1, ...values.map((d) => d.bookings));
+    const maxC = Math.max(DATA.targets.cpl, ...values.map((d) => d.cpl || 0));
+    const bw = iw / values.length * .68;
+    const x = (i) => L + (i + .5) * iw / values.length;
+    const yB = (v) => T + ih - v / maxB * ih;
+    const yC = (v) => T + ih - v / maxC * ih;
+    const color = COLORS[state.scope] || COLORS.All;
+    const targetY = yC(DATA.targets.cpl);
+    const bars = values.map((d,i) => `<rect x="${x(i)-bw/2}" y="${yB(d.bookings)}" width="${bw}" height="${T+ih-yB(d.bookings)}" fill="${color}" opacity=".82" ${attrs({"data-tip":`${d.date}: ${fmtN(d.bookings)} bookings, ${fmtR1(d.cpl)} CPL`})}></rect>`).join("");
+    const line = values.map((d,i) => `${i ? "L" : "M"}${x(i)},${yC(d.cpl || 0)}`).join(" ");
+    const ticks = [0, Math.ceil(maxB/2), maxB].map((v) => `<text class="tick-text" x="8" y="${yB(v)+4}">${fmtN(v)}</text><line class="grid-line" x1="${L}" x2="${W-R}" y1="${yB(v)}" y2="${yB(v)}"></line>`).join("");
+    $("#dailyPill").textContent = `${values.length} days`;
+    $("#dailyChart").innerHTML = `
+      ${ticks}<line class="axis-line" x1="${L}" x2="${W-R}" y1="${T+ih}" y2="${T+ih}"></line>
+      <line x1="${L}" x2="${W-R}" y1="${targetY}" y2="${targetY}" stroke="#b98112" stroke-dasharray="6 5"></line>
+      <text class="tick-text" x="${W-R-92}" y="${targetY-7}">R${DATA.targets.cpl} target</text>
+      ${bars}<path d="${line}" fill="none" stroke="#171b22" stroke-width="2.4"></path>
+      ${values.filter((_,i)=>i%5===0 || i===values.length-1).map((d,i,arr) => {
+        const idx=values.indexOf(d); return `<text class="tick-text" x="${x(idx)}" y="${H-12}" text-anchor="middle">${d.date.slice(8)}</text>`;
+      }).join("")}
+    `;
+  }
+
+  function svgFunnel(){
+    const t = totalsFor(state.scope) || DATA.totals;
+    const steps = [
+      ["Impressions", t.impressions],
+      ["Clicks", t.clicks],
+      ["LPVs", t.lpv],
+      ["Bookings", t.bookings],
+      ["Qualified", t.qualified]
+    ];
+    const max = steps[0][1] || 1;
+    const W=420,H=330,L=22,T=22,barH=38,gap=20;
+    $("#funnelChart").innerHTML = steps.map(([lab,val],i) => {
+      const w = Math.max(8, (W-L*2) * Math.sqrt(val / max));
+      const x = (W-w)/2, y = T + i*(barH+gap);
+      const rate = i ? val/(steps[i-1][1]||1) : 1;
+      return `<g ${attrs({"data-tip":`${lab}: ${fmtN(val)}${i ? `, ${pct(rate,1)} from prior step` : ""}`})}>
+        <rect x="${x}" y="${y}" width="${w}" height="${barH}" fill="${i<3 ? "var(--lepas-teal)" : "var(--lepas-gold)"}" opacity="${.86 - i*.08}" rx="3"></rect>
+        <text class="direct-label" x="${W/2}" y="${y+23}" text-anchor="middle">${lab} · ${fmtN(val)}</text>
+      </g>`;
+    }).join("");
+  }
+
+  function svgScatter(){
+    const rows = state.scope === "All"
+      ? Object.keys(DATA.scopes).filter((s) => s !== "X").map((s) => ({ name:LABELS[s], scope:s, ...DATA.scopes[s] }))
+      : DATA.campaigns.filter(inScope).slice(0,12).map((r) => ({ name:r.campaign.replace("LEP_ZA_AUG26_",""), scope:r.scope, ...r }));
+    const W=620,H=360,L=58,R=26,T=26,B=48,iw=W-L-R,ih=H-T-B;
+    const maxSpend = Math.max(1, ...rows.map((r) => r.spend));
+    const maxBookings = Math.max(1, ...rows.map((r) => r.bookings));
+    const maxCpl = Math.max(DATA.targets.cpl, ...rows.map((r) => r.cpl || 0));
+    const x = (v) => L + v/maxSpend*iw;
+    const y = (v) => T + ih - v/maxBookings*ih;
+    const targetX = x(DATA.targets.cpl * maxBookings / 4);
+    $("#scatterChart").innerHTML = `
+      <line class="axis-line" x1="${L}" x2="${W-R}" y1="${T+ih}" y2="${T+ih}"></line>
+      <line class="axis-line" x1="${L}" x2="${L}" y1="${T}" y2="${T+ih}"></line>
+      <text class="tick-text" x="${L}" y="${H-12}">Spend</text>
+      <text class="tick-text" x="12" y="${T+10}">Bookings</text>
+      ${rows.map((r) => {
+        const c = COLORS[r.scope] || COLORS.All;
+        const rad = 5 + Math.sqrt(r.bookings/maxBookings)*20;
+        return `<g ${attrs({"data-tip":`${r.name}<br>${fmtN(r.bookings)} bookings<br>${fmtR(r.spend)} spend<br>${fmtR1(r.cpl)} CPL`})}>
+          <circle cx="${x(r.spend)}" cy="${y(r.bookings)}" r="${rad}" fill="${c}" opacity=".78"></circle>
+          <text class="tick-text" x="${x(r.spend)+rad+4}" y="${y(r.bookings)+4}">${esc(r.name.split("_").slice(0,3).join(" "))}</text>
+        </g>`;
+      }).join("")}
+    `;
+  }
+
+  function trimLabel(value, max=28){
+    const text = String(value || "Unknown");
+    return text.length > max ? text.slice(0, max - 1) + "…" : text;
+  }
+
+  function heatColor(value, min, max){
+    if (!Number.isFinite(value)) return "#10232b";
+    const range = Math.max(max - min, .0001);
+    const n = Math.max(0, Math.min(1, (value - min) / range));
+    const stops = [
+      [0, 29, 55, 111],
+      [.48, 83, 137, 158],
+      [.72, 205, 176, 70],
+      [1, 199, 35, 76]
+    ];
+    const upper = stops.findIndex((s) => n <= s[0]);
+    const hi = stops[Math.max(1, upper)];
+    const lo = stops[Math.max(0, upper - 1)];
+    const t = (n - lo[0]) / Math.max(hi[0] - lo[0], .0001);
+    const mix = (a,b) => Math.round(a + (b - a) * t);
+    return `rgb(${mix(lo[1], hi[1])}, ${mix(lo[2], hi[2])}, ${mix(lo[3], hi[3])})`;
+  }
+
+  function renderCreativeHeat(rows){
+    const models = ["Range", "AMUR", "JAVAN", "PANTERA"];
+    const formats = aggBy(rows, "format")
+      .sort((a,b) => b.bookings - a.bookings || b.spend - a.spend)
+      .slice(0,9)
+      .map((r) => r.name);
+    const cells = formats.flatMap((format) => models.map((model) => {
+      const row = roll(rows.filter((r) => r.format === format && r.model === model));
+      return {
+        format,
+        model,
+        ctr: row.impressions ? row.clicks / row.impressions : NaN,
+        bookings: row.bookings,
+        spend: row.spend,
+        impressions: row.impressions
+      };
+    }));
+    const available = cells.map((c) => c.ctr).filter(Number.isFinite);
+    const min = Math.min(...available, 0);
+    const max = Math.max(...available, .01);
+    const W=620,H=430,L=202,R=18,T=82,B=34;
+    const cellW = (W - L - R) / models.length;
+    const cellH = Math.min(34, (H - T - B) / Math.max(formats.length, 1));
+    const header = models.map((model,i) => `
+      <text class="heat-label" x="${L + i*cellW + cellW/2}" y="${T-16}" text-anchor="middle">${model}</text>
+    `).join("");
+    const rowsSvg = formats.map((format,rowIndex) => {
+      const y = T + rowIndex * cellH;
+      const label = `<text class="heat-label" x="${L-14}" y="${y + cellH*.64}" text-anchor="end">${esc(trimLabel(format, 27))}</text>`;
+      const rowCells = models.map((model,colIndex) => {
+        const c = cells.find((cell) => cell.format === format && cell.model === model);
+        const x = L + colIndex * cellW;
+        const value = Number.isFinite(c?.ctr) ? pct(c.ctr,2) : "—";
+        const cls = Number.isFinite(c?.ctr) ? "heat-value" : "heat-missing";
+        const tipText = `${format}<br>${model}<br>CTR: ${value}<br>Bookings: ${fmtN(c?.bookings || 0)}<br>Spend: ${fmtR(c?.spend || 0)}<br>Impressions: ${fmtN(c?.impressions || 0)}`;
+        return `<g ${attrs({"data-tip":tipText})}>
+          <rect x="${x}" y="${y}" width="${cellW-3}" height="${cellH-3}" fill="${heatColor(c?.ctr, min, max)}" stroke="#061416" stroke-width="2"></rect>
+          <text class="${cls}" x="${x + cellW/2 - 1.5}" y="${y + cellH*.63}" text-anchor="middle">${value}</text>
+        </g>`;
+      }).join("");
+      return label + rowCells;
+    }).join("");
+    $("#creativeHeat").innerHTML = formats.length ? `
+      <text class="tick-text" x="26" y="31">${esc(LABELS[state.scope] || "All Market")} · click-through rate by format and model</text>
+      ${header}${rowsSvg}
+      <text class="tick-text" x="${L}" y="${H-12}">cooler</text>
+      <rect x="${L+48}" y="${H-22}" width="128" height="9" fill="url(#heatRamp)"></rect>
+      <defs><linearGradient id="heatRamp"><stop offset="0%" stop-color="#1d376f"></stop><stop offset="55%" stop-color="#53899e"></stop><stop offset="76%" stop-color="#cdb046"></stop><stop offset="100%" stop-color="#c7234c"></stop></linearGradient></defs>
+      <text class="tick-text" x="${L+186}" y="${H-12}">hotter CTR</text>
+    ` : `<text class="tick-text" x="24" y="42">No creative rows are available for this scope.</text>`;
+  }
+
+  function renderCreativeScatter(rows){
+    const plotted = rows
+      .filter((r) => r.impressions && r.spend)
+      .sort((a,b) => b.impressions - a.impressions)
+      .slice(0,14);
+    const W=620,H=430,L=74,R=34,T=48,B=64,iw=W-L-R,ih=H-T-B;
+    const maxSpend = Math.max(1, ...plotted.map((r) => r.spend));
+    const maxCtr = Math.max(.005, ...plotted.map((r) => r.ctr || 0)) * 1.18;
+    const maxImpr = Math.max(1, ...plotted.map((r) => r.impressions || 0));
+    const x = (v) => L + (v / maxSpend) * iw;
+    const y = (v) => T + ih - (v / maxCtr) * ih;
+    const xTicks = [0, .25, .5, .75, 1].map((p) => {
+      const xx = L + p * iw;
+      return `<line class="grid-line" x1="${xx}" x2="${xx}" y1="${T}" y2="${T+ih}"></line>
+      <text class="tick-text" x="${xx}" y="${H-30}" text-anchor="middle">${fmtR(maxSpend*p)}</text>`;
+    }).join("");
+    const yTicks = [0, .33, .66, 1].map((p) => {
+      const yy = T + ih - p * ih;
+      return `<line class="grid-line" x1="${L}" x2="${W-R}" y1="${yy}" y2="${yy}"></line>
+      <text class="tick-text" x="${L-14}" y="${yy+4}" text-anchor="end">${pct(maxCtr*p,2)}</text>`;
+    }).join("");
+    const labelOffsets = [
+      [0,-38,"middle"], [0,48,"middle"], [-48,-18,"end"], [50,-18,"start"],
+      [-50,30,"end"], [52,32,"start"], [0,-58,"middle"], [0,64,"middle"]
+    ];
+    const points = plotted.map((r,i) => {
+      const radius = 7 + Math.sqrt((r.impressions || 0) / maxImpr) * 26;
+      const cx = x(r.spend);
+      const cy = y(r.ctr || 0);
+      const label = trimLabel(String(r.creative || r.hook).replace(/_/g, " "), 20);
+      const offset = labelOffsets[i % labelOffsets.length];
+      const showLabel = i < 8;
+      const lx = Math.max(L+6, Math.min(W-R-6, cx + offset[0]));
+      const ly = Math.max(T+10, Math.min(T+ih-8, cy + offset[1]));
+      return {r, radius, cx, cy, label, showLabel, lx, ly, anchor:offset[2]};
+    });
+    const circles = points.map((p) => `<g ${attrs({"data-tip":`${p.r.creative}<br>${p.r.hook}<br>Format: ${p.r.format}<br>Model: ${p.r.model}<br>Spend: ${fmtR(p.r.spend)}<br>CTR: ${pct(p.r.ctr,2)}<br>Impressions: ${fmtN(p.r.impressions)}<br>Bookings: ${fmtN(p.r.bookings)}`})}>
+        <circle cx="${p.cx}" cy="${p.cy}" r="${p.radius}" fill="${COLORS[p.r.scope] || COLORS.All}" opacity=".72" stroke="#061416" stroke-width="2"></circle>
+      </g>`).join("");
+    const labels = points.filter((p) => p.showLabel).map((p) => `
+      <g>
+        <line class="grid-line" x1="${p.cx}" y1="${p.cy}" x2="${p.lx}" y2="${p.ly}"></line>
+        <text class="scatter-label" x="${p.lx}" y="${p.ly}" text-anchor="${p.anchor}">${esc(p.label)}</text>
+      </g>`).join("");
+    $("#creativeScatter").innerHTML = plotted.length ? `
+      ${xTicks}${yTicks}
+      <line class="axis-line" x1="${L}" x2="${W-R}" y1="${T+ih}" y2="${T+ih}"></line>
+      <line class="axis-line" x1="${L}" x2="${L}" y1="${T}" y2="${T+ih}"></line>
+      <text class="tick-text" x="${L + iw/2}" y="${H-8}" text-anchor="middle">Spend</text>
+      <text class="tick-text" x="20" y="${T+ih/2}" transform="rotate(-90 20 ${T+ih/2})" text-anchor="middle">Click-through rate</text>
+      ${circles}${labels}
+    ` : `<text class="tick-text" x="24" y="42">No creative rows are available for this scope.</text>`;
+  }
+
+  function renderCreativeMatrix(){
+    const rows = DATA.creatives.filter(inScope);
+    renderCreativeHeat(rows);
+    renderCreativeScatter(rows);
+  }
+
+  function svgRelationship(){
+    const rows = DATA.campaigns.filter(inScope);
+    const models = aggBy(rows, "model").sort((a,b)=>b.bookings-a.bookings).slice(0,4);
+    const audiences = aggBy(DATA.adsets.filter(inScope), "audience").sort((a,b)=>b.bookings-a.bookings).slice(0,5);
+    const W=620,H=360;
+    const center = {x:W/2,y:72,label:LABELS[state.scope] || "All Market", value:totalsFor(state.scope).bookings};
+    const modelY=180, audY=292;
+    const modelNodes = models.map((m,i)=>({ ...m, x:105+i*(410/Math.max(1,models.length-1)), y:modelY, type:"model" }));
+    const audNodes = audiences.map((a,i)=>({ ...a, x:72+i*(476/Math.max(1,audiences.length-1)), y:audY, type:"aud" }));
+    const node = (n,active=false) => `<g class="node ${active ? "active" : ""}" transform="translate(${n.x-58},${n.y-24})">
+      <rect width="116" height="48"></rect>
+      <text x="58" y="20" text-anchor="middle" font-weight="700" font-size="12">${esc(n.label || n.name)}</text>
+      <text x="58" y="36" text-anchor="middle" font-size="11" fill="#485a58">${fmtN(n.value || n.bookings)} bookings</text>
+    </g>`;
+    const edges1 = modelNodes.map((m)=>`<path class="rel-edge strong" d="M${center.x},${center.y+25} C${center.x},126 ${m.x},124 ${m.x},${m.y-26}"></path>`).join("");
+    const edges2 = modelNodes.flatMap((m,i)=>audNodes.map((a,j)=> (i+j)%2===0 ? `<path class="rel-edge" d="M${m.x},${m.y+26} C${m.x},236 ${a.x},238 ${a.x},${a.y-26}"></path>` : "")).join("");
+    $("#relationshipChart").innerHTML = `${edges1}${edges2}${node(center,true)}${modelNodes.map((n)=>node(n)).join("")}${audNodes.map((n)=>node(n)).join("")}`;
+  }
+
+  function renderBars(id, rows, nameKey, valueKey, color, emptyMessage){
+    const box = $(id);
+    if (!box) return;
+    if (!rows.length){
+      box.innerHTML = `<p class="hint">${emptyMessage}</p>`;
+      return;
+    }
+    const max = Math.max(1, ...rows.map((r) => r[valueKey] || 0));
+    box.innerHTML = rows.map((r) => `
+      <div class="bar-row">
+        <div class="bar-name" title="${esc(r[nameKey])}">${esc(r[nameKey])}</div>
+        <div class="bar-track"><div class="bar-fill" style="--w:${Math.max(2,(r[valueKey]||0)/max*100)}%;--c:${color}"></div></div>
+        <div class="bar-value">${fmtN(r[valueKey] || 0)} · ${fmtR1(r.cpl || ((r.spend||0)/(r.bookings||1)))}</div>
+      </div>
+    `).join("");
+  }
+
+  function renderLists(){
+    const color = COLORS[state.scope] || COLORS.All;
+    const placements = DATA.placements.filter(inScope).sort((a,b)=>b.spend-a.spend).slice(0,8);
+    renderBars("#placementList", placements, "placement", "spend", color, "No placement split is available for this scope.");
+    let geoRows = DATA.geo.filter(inScope);
+    if (state.scope === "YouTube") geoRows = [];
+    const byProv = Array.from(geoRows.reduce((m,r)=>{
+      const a=m.get(r.province)||{province:r.province,spend:0,bookings:0,qualified:0};
+      a.spend+=r.spend; a.bookings+=r.bookings; a.qualified+=r.qualified; a.cpl=a.bookings?a.spend/a.bookings:0;
+      m.set(r.province,a); return m;
+    }, new Map()).values()).sort((a,b)=>b.bookings-a.bookings).slice(0,8);
+    $("#geoHint").textContent = state.scope === "YouTube"
+      ? "YouTube is a derived DV360 OLV scope; provincial delivery is not isolated in the workbook location tab."
+      : "Provincial bookings and qualified lead depth from the workbook location tab.";
+    renderBars("#geoList", byProv, "province", "bookings", color, "No standalone geography available for this derived scope.");
+  }
+
+  function renderTable(){
+    const rows = DATA.campaigns.filter(inScope).sort((a,b)=>b.bookings-a.bookings).slice(0,14);
+    $("#tablePill").textContent = state.scope === "All" ? "All workbook campaigns" : LABELS[state.scope];
+    $("#campaignTable").innerHTML = `
+      <thead><tr><th>Campaign</th><th>Model</th><th>Spend</th><th>Impr.</th><th>Clicks</th><th>Bookings</th><th>CPL</th><th>Qualified</th><th>Pipeline</th></tr></thead>
+      <tbody>${rows.map((r)=>`
+        <tr>
+          <td>${esc(r.campaign)}<span class="pill">${esc(r.objective)}</span></td>
+          <td>${esc(r.model)}</td>
+          <td>${fmtR(r.spend)}</td>
+          <td>${fmtN(r.impressions)}</td>
+          <td>${fmtN(r.clicks)}</td>
+          <td>${fmtN(r.bookings)}</td>
+          <td>${fmtR1(r.cpl)}</td>
+          <td>${fmtN(r.qualified)}</td>
+          <td>${fmtR(r.pipeline)}</td>
+        </tr>`).join("")}</tbody>
+    `;
+  }
+
+  function wireTips(){
+    $$(".chart [data-tip]").forEach((el) => {
+      el.addEventListener("mouseenter", (ev) => showTip(`<b>${el.getAttribute("data-tip")}</b>`, ev));
+      el.addEventListener("mousemove", moveTip);
+      el.addEventListener("mouseleave", hideTip);
+    });
+  }
+
+  function render(){
+    renderHero();
+    renderMetrics();
+    renderInsights();
+    renderMap();
+    svgDaily();
+    svgFunnel();
+    svgScatter();
+    renderCreativeMatrix();
+    svgRelationship();
+    renderLists();
+    renderTable();
+    wireTips();
+  }
+
+  $$(".scope-btn").forEach((b) => b.addEventListener("click", () => setScope(b.dataset.scope)));
+  $$(".seg button[data-map-metric]").forEach((b) => {
+    b.addEventListener("click", () => {
+      state.mapMetric = b.dataset.mapMetric;
+      renderMap();
+      wireTips();
+    });
+  });
+  $$(".nav a[data-report-scope]").forEach((a) => {
+    a.addEventListener("click", (ev) => {
+      ev.preventDefault();
+      setScope(a.dataset.reportScope, true);
+    });
+  });
+
+  render();
+})();
+</script>
+<script src="./assets/three.min.js"></script>
+<script>
+const hero = document.querySelector(".hero");
+const canvas = document.querySelector(".light-canvas");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const source = { width: 2850, height: 745 };
+
+const renderer = new THREE.WebGLRenderer({
+  canvas,
+  alpha: true,
+  antialias: true,
+  powerPreference: "high-performance"
+});
+renderer.setClearColor(0x000000, 0);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+const scene = new THREE.Scene();
+const camera = new THREE.OrthographicCamera(0, 1, 1, 0, -10, 10);
+camera.position.z = 5;
+
+const makeGlowTexture = () => {
+  const size = 256;
+  const textureCanvas = document.createElement("canvas");
+  textureCanvas.width = size;
+  textureCanvas.height = size;
+  const ctx = textureCanvas.getContext("2d");
+  const gradient = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+  gradient.addColorStop(0, "rgba(255,255,255,1)");
+  gradient.addColorStop(0.18, "rgba(255,255,255,.96)");
+  gradient.addColorStop(0.38, "rgba(210,236,255,.58)");
+  gradient.addColorStop(0.72, "rgba(120,190,255,.22)");
+  gradient.addColorStop(1, "rgba(120,190,255,0)");
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, size, size);
+  const texture = new THREE.CanvasTexture(textureCanvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+};
+
+const glowTexture = makeGlowTexture();
+const lamps = [];
+
+const lampSpec = [
+  { x: 414, y: 366, sx: 170, sy: 48, phase: .0, amp: .42 },
+  { x: 664, y: 363, sx: 150, sy: 44, phase: .08, amp: .36 },
+  { x: 1184, y: 342, sx: 190, sy: 48, phase: .22, amp: .44 },
+  { x: 1482, y: 343, sx: 190, sy: 48, phase: .3, amp: .4 },
+  { x: 2150, y: 346, sx: 218, sy: 54, phase: .48, amp: .48 },
+  { x: 2458, y: 346, sx: 218, sy: 54, phase: .56, amp: .46 },
+  { x: 435, y: 394, sx: 150, sy: 86, phase: .04, amp: .24, color: 0xfff2dc, low: true },
+  { x: 2172, y: 410, sx: 210, sy: 104, phase: .5, amp: .25, color: 0xfff1d4, low: true },
+  { x: 2482, y: 410, sx: 198, sy: 98, phase: .58, amp: .25, color: 0xfff1d4, low: true }
+];
+
+function createLamp(spec){
+  const group = new THREE.Group();
+  const color = new THREE.Color(spec.color || 0xdcebff);
+
+  const halo = new THREE.Sprite(new THREE.SpriteMaterial({
+    map: glowTexture,
+    color,
+    transparent: true,
+    opacity: spec.low ? .58 : .96,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
+  }));
+  halo.scale.set(spec.sx, spec.sy, 1);
+  group.add(halo);
+
+  const core = new THREE.Sprite(new THREE.SpriteMaterial({
+    map: glowTexture,
+    color: 0xffffff,
+    transparent: true,
+    opacity: spec.low ? .62 : 1,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
+  }));
+  core.scale.set(spec.sx * .36, Math.max(spec.sy * .28, 8), 1);
+  group.add(core);
+
+  group.userData = { spec, halo, core };
+  scene.add(group);
+  lamps.push(group);
+}
+
+lampSpec.forEach(createLamp);
+
+function coverMetrics(){
+  const box = hero.getBoundingClientRect();
+  const scale = Math.max(box.width / source.width, box.height / source.height);
+  const renderedWidth = source.width * scale;
+  const renderedHeight = source.height * scale;
+  return {
+    width: box.width,
+    height: box.height,
+    scale,
+    offsetX: (box.width - renderedWidth) / 2,
+    offsetY: (box.height - renderedHeight) / 2
+  };
+}
+
+function positionLamps(){
+  const m = coverMetrics();
+  camera.right = m.width;
+  camera.bottom = m.height;
+  camera.updateProjectionMatrix();
+  renderer.setSize(m.width, m.height, false);
+
+  lamps.forEach((group) => {
+    const { spec, halo, core } = group.userData;
+    const x = m.offsetX + spec.x * m.scale;
+    const y = m.offsetY + spec.y * m.scale;
+    group.position.set(x, y, 0);
+    halo.scale.set(spec.sx * m.scale, spec.sy * m.scale, 1);
+    core.scale.set(spec.sx * .36 * m.scale, Math.max(spec.sy * .28 * m.scale, 7), 1);
+  });
+  window.__lepasLights = {
+    lampCount: lamps.length,
+    width: m.width,
+    height: m.height,
+    scale: m.scale
+  };
+}
+
+function intensityAt(time, spec){
+  return 0;
+}
+
+function animate(timeMs){
+  const time = timeMs * .001;
+  lamps.forEach((group) => {
+    const { spec, halo, core } = group.userData;
+    const i = intensityAt(time, spec);
+    halo.material.opacity = Math.min(1, (spec.low ? .68 : .92) * i);
+    core.material.opacity = Math.min(1, (spec.low ? .8 : 1) * (i + .08));
+  });
+  renderer.render(scene, camera);
+  requestAnimationFrame(animate);
+}
+
+positionLamps();
+canvas.dataset.lights = "running";
+window.addEventListener("resize", positionLamps, { passive: true });
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>
