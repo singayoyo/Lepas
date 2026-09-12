@@ -34,8 +34,10 @@ asking what a number means or where it came from.
 **Bold. Youthful. Design-led.**
 
 Lepas is Chery's design-forward SUV brand. Its own language is confident and styling-led:
-"Drive a LEPAS today", "bold design and big tech", "feline poise". The L4 range is named for
-big cats, AMUR, JAVAN and PANTERA, and the media plan follows those lines.
+"Drive a LEPAS today", "bold design and big tech", "feline poise". The public model menu uses
+L4 ICE, L6 ICE, L6 EV and L8 (coming soon). Older workbook and campaign shorthand can still
+appear as AMUR, JAVAN, PANTERA or Range, but the report should translate those into public
+LEPAS model language wherever a client will read it.
 
 Voice in this document: direct and unhedged. State the number, then what it means. No
 throat-clearing, no "it appears that". Where something underperformed, say so plainly, the
